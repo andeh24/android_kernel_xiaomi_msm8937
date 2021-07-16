@@ -43,7 +43,7 @@
 
 #define IPA_TAG_SLEEP_MIN_USEC (1000)
 #define IPA_TAG_SLEEP_MAX_USEC (2000)
-#define IPA_FORCE_CLOSE_TAG_PROCESS_TIMEOUT (10 * HZ)
+#define IPA_FORCE_CLOSE_TAG_PROCESS_TIMEOUT msecs_to_jiffies(10000)
 #define IPA_BCR_REG_VAL_v3_0 (0x00000001)
 #define IPA_BCR_REG_VAL_v3_5 (0x0000003B)
 #define IPA_AGGR_GRAN_MIN (1)
@@ -4898,7 +4898,7 @@ int ipa3_straddle_boundary(u32 start, u32 end, u32 boundary)
  */
 void ipa3_bam_reg_dump(void)
 {
-	static DEFINE_RATELIMIT_STATE(_rs, 500*HZ, 1);
+	static DEFINE_RATELIMIT_STATE(_rs, msecs_to_jiffies(500000), 1);
 
 	if (__ratelimit(&_rs)) {
 		IPA_ACTIVE_CLIENTS_INC_SIMPLE();

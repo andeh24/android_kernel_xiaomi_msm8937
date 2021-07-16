@@ -454,7 +454,7 @@ int ipa_wdi3_enable_pipes(void)
 	ret = ipa_rm_request_resource(IPA_RM_RESOURCE_WLAN_PROD);
 	if (ret == -EINPROGRESS) {
 		if (wait_for_completion_timeout(&ipa_wdi3_ctx->wdi3_completion,
-			10*HZ) == 0) {
+			msecs_to_jiffies(10000)) == 0) {
 			IPA_WDI3_ERR("WLAN_PROD resource req time out\n");
 			return -EFAULT;
 		}
