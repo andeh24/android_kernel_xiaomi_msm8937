@@ -234,7 +234,7 @@ static int get_1284_register(struct parport *pp, unsigned char reg, unsigned cha
 		kref_put(&rq->ref_count, destroy_async);
 		return 0;
 	}
-	if (wait_for_completion_timeout(&rq->compl, HZ)) {
+	if (wait_for_completion_timeout(&rq->compl, msecs_to_jiffies(1000))) {
 		ret = rq->urb->status;
 		*val = priv->reg[(reg >= 9) ? 0 : regindex[reg]];
 		if (ret)

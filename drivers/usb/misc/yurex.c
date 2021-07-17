@@ -36,7 +36,7 @@
 #define CMD_PADDING	0xff
 
 #define YUREX_BUF_SIZE		8
-#define YUREX_WRITE_TIMEOUT	(HZ*2)
+#define YUREX_WRITE_TIMEOUT	msecs_to_jiffies(2000)
 
 /* table of devices that work with this driver */
 static struct usb_device_id yurex_table[] = {

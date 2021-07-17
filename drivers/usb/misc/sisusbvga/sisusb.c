@@ -144,7 +144,7 @@ sisusb_kill_all_busy(struct sisusb_usb_data *sisusb)
 static int
 sisusb_wait_all_out_complete(struct sisusb_usb_data *sisusb)
 {
-	int timeout = 5 * HZ, i = 1;
+	int timeout = msecs_to_jiffies(5000), i = 1;
 
 	wait_event_timeout(sisusb->wait_q,
 				(i = sisusb_all_free(sisusb)),
@@ -171,7 +171,7 @@ sisusb_outurb_available(struct sisusb_usb_data *sisusb)
 static int
 sisusb_get_free_outbuf(struct sisusb_usb_data *sisusb)
 {
-	int i, timeout = 5 * HZ;
+	int i, timeout = msecs_to_jiffies(5000);
 
 	wait_event_timeout(sisusb->wait_q,
 				((i = sisusb_outurb_available(sisusb)) >= 0),
@@ -411,7 +411,7 @@ static int sisusb_send_bulk_msg(struct sisusb_usb_data *sisusb, int ep, int len,
 						buffer,
 						thispass,
 						&transferred_len,
-						async ? 0 : 5 * HZ,
+						async ? 0 : msecs_to_jiffies(5000),
 						tflags);
 
 			if (result == -ETIMEDOUT) {
@@ -505,7 +505,7 @@ static int sisusb_recv_bulk_msg(struct sisusb_usb_data *sisusb, int ep, int len,
 					   buffer,
 					   thispass,
 					   &transferred_len,
-					   5 * HZ,
+					   msecs_to_jiffies(5000),
 					   tflags);
 
 		if (transferred_len)

@@ -1581,7 +1581,7 @@ static int musb_gadget_wakeup(struct usb_gadget *gadget)
 
 		/* Block idling for at least 1s */
 		musb_platform_try_idle(musb,
-			jiffies + msecs_to_jiffies(1 * HZ));
+			jiffies + msecs_to_jiffies(1000));
 
 		status = 0;
 		goto done;

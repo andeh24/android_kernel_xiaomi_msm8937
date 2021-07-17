@@ -315,7 +315,7 @@ static int gadget_suspend(struct isp1301 *isp)
 /*-------------------------------------------------------------------------*/
 
 #define	TIMER_MINUTES	10
-#define	TIMER_JIFFIES	(TIMER_MINUTES * 60 * HZ)
+#define	TIMER_JIFFIES	(TIMER_MINUTES * 60 * msecs_to_jiffies(1000))
 
 /* Almost all our I2C messaging comes from a work queue's task context.
  * NOTE: guaranteeing certain response times might mean we shouldn't

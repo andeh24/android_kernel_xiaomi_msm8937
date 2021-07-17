@@ -174,7 +174,7 @@ static void otg_timer(unsigned long _musb)
 	case OTG_STATE_B_IDLE:
 		devctl = musb_readb(mregs, MUSB_DEVCTL);
 		if (devctl & MUSB_DEVCTL_BDEVICE)
-			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * msecs_to_jiffies(1000));
 		else
 			musb->xceiv->state = OTG_STATE_A_IDLE;
 		break;
@@ -279,7 +279,7 @@ static irqreturn_t am35x_musb_interrupt(int irq, void *hci)
 			 */
 			musb->int_usb &= ~MUSB_INTR_VBUSERROR;
 			musb->xceiv->state = OTG_STATE_A_WAIT_VFALL;
-			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * msecs_to_jiffies(1000));
 			WARNING("VBUS error workaround (delay coming)\n");
 		} else if (drvvbus) {
 			MUSB_HST_MODE(musb);
@@ -325,7 +325,7 @@ eoi:
 
 	/* Poll for ID change */
 	if (musb->xceiv->state == OTG_STATE_B_IDLE)
-		mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+		mod_timer(&otg_workaround, jiffies + POLL_SECONDS * msecs_to_jiffies(1000));
 
 	spin_unlock_irqrestore(&musb->lock, flags);
 

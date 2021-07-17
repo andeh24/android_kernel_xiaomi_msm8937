@@ -432,10 +432,10 @@ struct oxu_hcd {				/* one per controller */
 	u8			sbrn;		/* packed release number */
 };
 
-#define EHCI_IAA_JIFFIES	(HZ/100)	/* arbitrary; ~10 msec */
-#define EHCI_IO_JIFFIES	 	(HZ/10)		/* io watchdog > irq_thresh */
-#define EHCI_ASYNC_JIFFIES      (HZ/20)		/* async idle timeout */
-#define EHCI_SHRINK_JIFFIES     (HZ/200)	/* async qh unlink delay */
+#define EHCI_IAA_JIFFIES	msecs_to_jiffies(10)	/* arbitrary; ~10 msec */
+#define EHCI_IO_JIFFIES	 	msecs_to_jiffies(100)		/* io watchdog > irq_thresh */
+#define EHCI_ASYNC_JIFFIES      msecs_to_jiffies(50)		/* async idle timeout */
+#define EHCI_SHRINK_JIFFIES     msecs_to_jiffies(5)	/* async qh unlink delay */
 
 enum ehci_timer_action {
 	TIMER_IO_WATCHDOG,

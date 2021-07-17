@@ -404,7 +404,7 @@ static int ld_usb_release(struct inode *inode, struct file *file)
 
 	/* wait until write transfer is finished */
 	if (dev->interrupt_out_busy)
-		wait_event_interruptible_timeout(dev->write_wait, !dev->interrupt_out_busy, 2 * HZ);
+		wait_event_interruptible_timeout(dev->write_wait, !dev->interrupt_out_busy, msecs_to_jiffies(2000));
 	ld_usb_abort_transfers(dev);
 	dev->open_count = 0;
 

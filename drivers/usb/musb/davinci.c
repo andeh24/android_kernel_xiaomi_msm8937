@@ -225,7 +225,7 @@ static void otg_timer(unsigned long _musb)
 		 * VBUSERR got reported during enumeration" cases.
 		 */
 		if (devctl & MUSB_DEVCTL_VBUS) {
-			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * msecs_to_jiffies(1000));
 			break;
 		}
 		musb->xceiv->state = OTG_STATE_A_WAIT_VRISE;
@@ -249,7 +249,7 @@ static void otg_timer(unsigned long _musb)
 				devctl | MUSB_DEVCTL_SESSION);
 		devctl = musb_readb(mregs, MUSB_DEVCTL);
 		if (devctl & MUSB_DEVCTL_BDEVICE)
-			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * msecs_to_jiffies(1000));
 		else
 			musb->xceiv->state = OTG_STATE_A_IDLE;
 		break;
@@ -326,7 +326,7 @@ static irqreturn_t davinci_musb_interrupt(int irq, void *__hci)
 			 */
 			musb->int_usb &= ~MUSB_INTR_VBUSERROR;
 			musb->xceiv->state = OTG_STATE_A_WAIT_VFALL;
-			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * msecs_to_jiffies(1000));
 			WARNING("VBUS error workaround (delay coming)\n");
 		} else if (drvvbus) {
 			MUSB_HST_MODE(musb);
@@ -362,7 +362,7 @@ static irqreturn_t davinci_musb_interrupt(int irq, void *__hci)
 
 	/* poll for ID change */
 	if (musb->xceiv->state == OTG_STATE_B_IDLE)
-		mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+		mod_timer(&otg_workaround, jiffies + POLL_SECONDS * msecs_to_jiffies(1000));
 
 	spin_unlock_irqrestore(&musb->lock, flags);
 

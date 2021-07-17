@@ -1059,7 +1059,7 @@ static int uas_wait_for_pending_cmnds(struct uas_dev_info *devinfo)
 		if (r == 0)
 			return -ETIME;
 
-		if (time_after(jiffies, start_time + 5 * HZ))
+		if (time_after(jiffies, start_time + 5 * msecs_to_jiffies(1000)))
 			return -ETIME;
 	} while (!uas_cmnd_list_empty(devinfo));
 
