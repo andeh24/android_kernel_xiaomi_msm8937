@@ -769,7 +769,7 @@ mv64xxx_of_config(struct mv64xxx_i2c_data *drv_data,
 	/* Its not yet defined how timeouts will be specified in device tree.
 	 * So hard code the value to 1 second.
 	 */
-	drv_data->adapter.timeout = HZ;
+	drv_data->adapter.timeout = msecs_to_jiffies(1000);
 
 	device = of_match_device(mv64xxx_i2c_of_match_table, dev);
 	if (!device)

@@ -209,7 +209,7 @@ static int ocores_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_START);
 
 	if (wait_event_timeout(i2c->wait, (i2c->state == STATE_ERROR) ||
-			       (i2c->state == STATE_DONE), HZ))
+			       (i2c->state == STATE_DONE), msecs_to_jiffies(1000)))
 		return (i2c->state == STATE_DONE) ? num : -EIO;
 	else
 		return -ETIMEDOUT;

@@ -73,7 +73,7 @@ static struct i2c_algo_bit_data bit_data = {
 	.getsda		= bit_via_getsda,
 	.getscl		= bit_via_getscl,
 	.udelay		= 5,
-	.timeout	= HZ
+	.timeout	= msecs_to_jiffies(1000),
 };
 
 static struct i2c_adapter vt586b_adapter = {

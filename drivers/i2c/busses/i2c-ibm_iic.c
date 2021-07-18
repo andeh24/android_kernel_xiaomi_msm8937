@@ -229,7 +229,7 @@ static void iic_dev_reset(struct ibm_iic_private* dev)
 /* Wait for SCL and/or SDA to be high */
 static int iic_dc_wait(volatile struct iic_regs __iomem *iic, u8 mask)
 {
-	unsigned long x = jiffies + HZ / 28 + 2;
+	unsigned long x = jiffies + msecs_to_jiffies(1000) / 28 + 2;
 	while ((in_8(&iic->directcntl) & mask) != mask){
 		if (unlikely(time_after(jiffies, x)))
 			return -1;
@@ -748,7 +748,7 @@ static int iic_probe(struct platform_device *ofdev)
 	i2c_set_adapdata(adap, dev);
 	adap->class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
 	adap->algo = &iic_algo;
-	adap->timeout = HZ;
+	adap->timeout = msecs_to_jiffies(1000);
 
 	ret = i2c_add_adapter(adap);
 	if (ret  < 0) {

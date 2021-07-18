@@ -61,7 +61,7 @@ static struct i2c_algo_bit_data i2c_versatile_algo = {
 	.getsda	= i2c_versatile_getsda,
 	.getscl = i2c_versatile_getscl,
 	.udelay	= 30,
-	.timeout = HZ,
+	.timeout = msecs_to_jiffies(1000),
 };
 
 static int i2c_versatile_probe(struct platform_device *dev)

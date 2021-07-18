@@ -114,7 +114,7 @@ static int simtec_i2c_probe(struct platform_device *dev)
 	pd->bit.setscl = simtec_i2c_setscl;
 	pd->bit.getsda = simtec_i2c_getsda;
 	pd->bit.getscl = simtec_i2c_getscl;
-	pd->bit.timeout = HZ;
+	pd->bit.timeout = msecs_to_jiffies(1000);
 	pd->bit.udelay = 20;
 
 	ret = i2c_bit_add_bus(&pd->adap);

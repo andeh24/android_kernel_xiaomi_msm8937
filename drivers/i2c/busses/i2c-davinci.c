@@ -39,7 +39,7 @@
 
 /* ----- global defines ----------------------------------------------- */
 
-#define DAVINCI_I2C_TIMEOUT	(1*HZ)
+#define DAVINCI_I2C_TIMEOUT	msecs_to_jiffies(1000)
 #define DAVINCI_I2C_MAX_TRIES	2
 #define I2C_DAVINCI_INTR_ALL    (DAVINCI_I2C_IMR_AAS | \
 				 DAVINCI_I2C_IMR_SCD | \

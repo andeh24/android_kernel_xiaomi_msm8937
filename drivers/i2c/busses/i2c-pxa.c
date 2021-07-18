@@ -330,7 +330,7 @@ static int i2c_pxa_wait_bus_not_busy(struct pxa_i2c *i2c)
 
 static int i2c_pxa_wait_master(struct pxa_i2c *i2c)
 {
-	unsigned long timeout = jiffies + HZ*4;
+	unsigned long timeout = jiffies + msecs_to_jiffies(4000);
 
 	while (time_before(jiffies, timeout)) {
 		if (i2c_debug > 1)
@@ -382,7 +382,7 @@ static int i2c_pxa_set_master(struct pxa_i2c *i2c)
 #ifdef CONFIG_I2C_PXA_SLAVE
 static int i2c_pxa_wait_slave(struct pxa_i2c *i2c)
 {
-	unsigned long timeout = jiffies + HZ*1;
+	unsigned long timeout = jiffies + msecs_to_jiffies(1000);
 
 	/* wait for stop */
 
@@ -705,7 +705,7 @@ static int i2c_pxa_send_mastercode(struct pxa_i2c *i2c)
 
 	spin_unlock_irq(&i2c->lock);
 	timeout = wait_event_timeout(i2c->wait,
-			i2c->highmode_enter == false, HZ * 1);
+			i2c->highmode_enter == false, msecs_to_jiffies(1000));
 
 	i2c->highmode_enter = false;
 
@@ -798,7 +798,7 @@ static int i2c_pxa_do_xfer(struct pxa_i2c *i2c, struct i2c_msg *msg, int num)
 	/*
 	 * The rest of the processing occurs in the interrupt handler.
 	 */
-	timeout = wait_event_timeout(i2c->wait, i2c->msg_num == 0, HZ * 5);
+	timeout = wait_event_timeout(i2c->wait, i2c->msg_num == 0, msecs_to_jiffies(5000));
 	i2c_pxa_stop_message(i2c);
 
 	/*

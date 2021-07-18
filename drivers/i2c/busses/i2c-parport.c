@@ -142,7 +142,7 @@ static const struct i2c_algo_bit_data parport_algo_data = {
 	.getsda		= parport_getsda,
 	.getscl		= parport_getscl,
 	.udelay		= 10, /* ~50 kbps */
-	.timeout	= HZ,
+	.timeout	= msecs_to_jiffies(1000),
 };
 
 /* ----- I2c and parallel port call-back functions and structures --------- */
