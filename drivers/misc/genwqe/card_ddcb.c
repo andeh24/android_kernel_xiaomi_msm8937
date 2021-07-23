@@ -500,7 +500,7 @@ int __genwqe_wait_ddcb(struct genwqe_dev *cd, struct ddcb_requ *req)
 
 	rc = wait_event_interruptible_timeout(queue->ddcb_waitqs[ddcb_no],
 				ddcb_requ_finished(cd, req),
-				genwqe_ddcb_software_timeout * HZ);
+				genwqe_ddcb_software_timeout * msecs_to_jiffies(1000));
 
 	/*
 	 * We need to distinguish 3 cases here:
@@ -1205,7 +1205,7 @@ static int genwqe_card_thread(void *data)
 			rc = wait_event_interruptible_timeout(
 				cd->queue_waitq,
 				genwqe_next_ddcb_ready(cd) ||
-				(should_stop = kthread_should_stop()), HZ);
+				(should_stop = kthread_should_stop()), msecs_to_jiffies(1000));
 		}
 		if (should_stop)
 			break;

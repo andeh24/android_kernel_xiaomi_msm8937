@@ -679,7 +679,7 @@ static void vmballoon_work(struct work_struct *work)
 	 * stopped while the system transitions to/from sleep/hibernation.
 	 */
 	queue_delayed_work(system_freezable_wq,
-			   dwork, round_jiffies_relative(HZ));
+			   dwork, round_jiffies_relative(msecs_to_jiffies(1000)));
 }
 
 /*

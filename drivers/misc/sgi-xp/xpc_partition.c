@@ -369,7 +369,7 @@ xpc_deactivate_partition(const int line, struct xpc_partition *part,
 	xpc_arch_ops.request_partition_deactivation(part);
 
 	/* set a timelimit on the disengage phase of the deactivation request */
-	part->disengage_timeout = jiffies + (xpc_disengage_timelimit * HZ);
+	part->disengage_timeout = jiffies + (xpc_disengage_timelimit * msecs_to_jiffies(1000));
 	part->disengage_timer.expires = part->disengage_timeout;
 	add_timer(&part->disengage_timer);
 

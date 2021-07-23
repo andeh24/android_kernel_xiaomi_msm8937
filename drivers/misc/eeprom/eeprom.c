@@ -55,7 +55,7 @@ static void eeprom_update_client(struct i2c_client *client, u8 slice)
 	mutex_lock(&data->update_lock);
 
 	if (!(data->valid & (1 << slice)) ||
-	    time_after(jiffies, data->last_updated[slice] + 300 * HZ)) {
+	    time_after(jiffies, data->last_updated[slice] + msecs_to_jiffies(300000))) {
 		dev_dbg(&client->dev, "Starting eeprom update, slice %u\n", slice);
 
 		if (i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
