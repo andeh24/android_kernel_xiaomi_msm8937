@@ -1353,7 +1353,7 @@ static const struct file_operations proc_vmstat_file_operations = {
 
 #ifdef CONFIG_SMP
 static DEFINE_PER_CPU(struct delayed_work, vmstat_work);
-int sysctl_stat_interval __read_mostly = HZ;
+int sysctl_stat_interval __read_mostly = 1000;
 static cpumask_var_t cpu_stat_off;
 
 static void vmstat_update(struct work_struct *w)
@@ -1366,7 +1366,7 @@ static void vmstat_update(struct work_struct *w)
 		 */
 		schedule_delayed_work_on(smp_processor_id(),
 				this_cpu_ptr(&vmstat_work),
-			round_jiffies_relative(sysctl_stat_interval));
+			round_jiffies_relative(msecs_to_jiffies(sysctl_stat_interval)));
 	} else {
 		/*
 		 * We did not update any counters so the app may be in
@@ -1441,12 +1441,12 @@ static void vmstat_shepherd(struct work_struct *w)
 			cpumask_test_and_clear_cpu(cpu, cpu_stat_off))
 
 			schedule_delayed_work_on(cpu, &per_cpu(vmstat_work, cpu),
-				__round_jiffies_relative(sysctl_stat_interval, cpu));
+				__round_jiffies_relative(msecs_to_jiffies(sysctl_stat_interval), cpu));
 
 	put_online_cpus();
 
 	schedule_delayed_work(&shepherd,
-		round_jiffies_relative(sysctl_stat_interval));
+		round_jiffies_relative(msecs_to_jiffies(sysctl_stat_interval)));
 
 }
 
@@ -1463,7 +1463,7 @@ static void __init start_shepherd_timer(void)
 	cpumask_copy(cpu_stat_off, cpu_online_mask);
 
 	schedule_delayed_work(&shepherd,
-		round_jiffies_relative(sysctl_stat_interval));
+		round_jiffies_relative(msecs_to_jiffies(sysctl_stat_interval)));
 }
 
 static void vmstat_cpu_dead(int node)

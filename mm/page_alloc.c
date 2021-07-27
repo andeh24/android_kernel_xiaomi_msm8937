@@ -342,7 +342,7 @@ static void bad_page(struct page *page, const char *reason,
 		nr_shown = 0;
 	}
 	if (nr_shown++ == 0)
-		resume = jiffies + 60 * HZ;
+		resume = jiffies + msecs_to_jiffies(60000);
 
 	printk(KERN_ALERT "BUG: Bad page state in process %s  pfn:%05lx\n",
 		current->comm, page_to_pfn(page));
@@ -1982,7 +1982,7 @@ static nodemask_t *zlc_setup(struct zonelist *zonelist, int alloc_flags)
 	if (!zlc)
 		return NULL;
 
-	if (time_after(jiffies, zlc->last_full_zap + HZ)) {
+	if (time_after(jiffies, zlc->last_full_zap + msecs_to_jiffies(1000))) {
 		bitmap_zero(zlc->fullzones, MAX_ZONES_PER_ZONELIST);
 		zlc->last_full_zap = jiffies;
 	}
@@ -2673,7 +2673,7 @@ __alloc_pages_high_priority(gfp_t gfp_mask, unsigned int order,
 			preferred_zone, classzone_idx, migratetype);
 
 		if (!page && gfp_mask & __GFP_NOFAIL)
-			wait_iff_congested(preferred_zone, BLK_RW_ASYNC, HZ/50);
+			wait_iff_congested(preferred_zone, BLK_RW_ASYNC, msecs_to_jiffies(20));
 	} while (!page && (gfp_mask & __GFP_NOFAIL));
 
 	return page;
@@ -2961,7 +2961,7 @@ rebalance:
 	if (should_alloc_retry(gfp_mask, order, did_some_progress,
 						pages_reclaimed)) {
 		/* Wait for some write requests to complete then retry */
-		wait_iff_congested(preferred_zone, BLK_RW_ASYNC, HZ/50);
+		wait_iff_congested(preferred_zone, BLK_RW_ASYNC, msecs_to_jiffies(20));
 		goto rebalance;
 	} else {
 		/*
