@@ -28,7 +28,7 @@ __setup("lpj=", lpj_setup);
  * Also, this code tries to handle non-maskable asynchronous events
  * (like SMIs)
  */
-#define DELAY_CALIBRATION_TICKS			((HZ < 100) ? 1 : (HZ/100))
+#define DELAY_CALIBRATION_TICKS			((msecs_to_jiffies(1000) < 100) ? 1 : msecs_to_jiffies(10))
 #define MAX_DIRECT_CALIBRATION_RETRIES		5
 
 static unsigned long calibrate_delay_direct(void)

@@ -238,7 +238,7 @@ static s32 bmp085_get_pressure(struct bmp085_data *data, int *pressure)
 
 	/* alt least every second force an update of the ambient temperature */
 	if ((data->last_temp_measurement == 0) ||
-	    time_is_before_jiffies(data->last_temp_measurement + 1*HZ)) {
+	    time_is_before_jiffies(data->last_temp_measurement + msecs_to_jiffies(1000))) {
 		status = bmp085_get_temperature(data, NULL);
 		if (status < 0)
 			return status;
@@ -406,7 +406,7 @@ static void bmp085_get_of_properties(struct bmp085_data *data)
 		data->chip_id = prop & 0xff;
 
 	if (!of_property_read_u32(np, "temp-measurement-period", &prop))
-		data->temp_measurement_period = (prop/100)*HZ;
+		data->temp_measurement_period = (prop/100)*msecs_to_jiffies(1000);
 
 	if (!of_property_read_u32(np, "default-oversampling", &prop))
 		data->oversampling_setting = prop & 0xff;
@@ -423,7 +423,7 @@ static int bmp085_init_client(struct bmp085_data *data)
 	/* default settings */
 	data->chip_id = BMP085_CHIP_ID;
 	data->last_temp_measurement = 0;
-	data->temp_measurement_period = 1*HZ;
+	data->temp_measurement_period = msecs_to_jiffies(1000);
 	data->oversampling_setting = 3;
 
 	bmp085_get_of_properties(data);

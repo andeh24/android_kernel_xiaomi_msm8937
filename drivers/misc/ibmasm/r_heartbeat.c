@@ -79,7 +79,7 @@ int ibmasm_start_reverse_heartbeat(struct service_processor *sp, struct reverse_
 
 		wait_event_interruptible_timeout(rhb->wait,
 			rhb->stopped,
-			REVERSE_HEARTBEAT_TIMEOUT * HZ);
+			REVERSE_HEARTBEAT_TIMEOUT * msecs_to_jiffies(1000));
 
 		if (signal_pending(current) || rhb->stopped) {
 			result = -EINTR;

@@ -860,7 +860,7 @@ struct xpc_arch_operations {
  * These can occur whenever an IRQ's associated amo write doesn't complete
  * until after the IRQ was received.
  */
-#define XPC_DROPPED_NOTIFY_IRQ_WAIT_INTERVAL	(0.25 * HZ)
+#define XPC_DROPPED_NOTIFY_IRQ_WAIT_INTERVAL	msecs_to_jiffies(250)
 
 /* number of seconds to wait for other partitions to disengage */
 #define XPC_DISENGAGE_DEFAULT_TIMELIMIT		90

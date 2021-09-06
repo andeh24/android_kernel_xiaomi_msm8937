@@ -110,7 +110,7 @@ static void pcf_isa_waitforpin(void *data)
 		if (pcf_pending == 0) {
 			spin_unlock_irqrestore(&lock, flags);
 			prepare_to_wait(&pcf_wait, &wait, TASK_INTERRUPTIBLE);
-			if (schedule_timeout(timeout*HZ)) {
+			if (schedule_timeout(timeout*msecs_to_jiffies(1000))) {
 				spin_lock_irqsave(&lock, flags);
 				if (pcf_pending == 1) {
 					pcf_pending = 0;

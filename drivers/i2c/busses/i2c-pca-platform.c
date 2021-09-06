@@ -183,7 +183,7 @@ static int i2c_pca_pf_probe(struct platform_device *pdev)
 		i2c->algo_data.i2c_clock = platform_data->i2c_clock_speed;
 		i2c->gpio = platform_data->gpio;
 	} else {
-		i2c->adap.timeout = HZ;
+		i2c->adap.timeout = msecs_to_jiffies(1000);
 		i2c->algo_data.i2c_clock = 59000;
 		i2c->gpio = -1;
 	}

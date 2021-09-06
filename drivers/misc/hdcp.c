@@ -1345,7 +1345,7 @@ static void hdcp_lib_topology_work(struct kthread_work *work)
 	}
 
 	reinit_completion(&handle->topo_wait);
-	timeout = wait_for_completion_timeout(&handle->topo_wait, HZ * 3);
+	timeout = wait_for_completion_timeout(&handle->topo_wait, msecs_to_jiffies(3000));
 	if (!timeout) {
 		pr_err("topology receiver id list timeout\n");
 

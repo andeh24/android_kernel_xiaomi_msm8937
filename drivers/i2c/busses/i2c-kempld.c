@@ -197,7 +197,7 @@ static int kempld_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 {
 	struct kempld_i2c_data *i2c = i2c_get_adapdata(adap);
 	struct kempld_device_data *pld = i2c->pld;
-	unsigned long timeout = jiffies + HZ;
+	unsigned long timeout = jiffies + msecs_to_jiffies(1000);
 	int ret;
 
 	i2c->msg = msgs;
@@ -215,7 +215,7 @@ static int kempld_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 			return (i2c->state == STATE_DONE) ? num : ret;
 
 		if (ret == 0)
-			timeout = jiffies + HZ;
+			timeout = jiffies + msecs_to_jiffies(1000);
 
 		usleep_range(5, 15);
 	}

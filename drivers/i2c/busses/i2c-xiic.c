@@ -661,7 +661,7 @@ static int xiic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 	xiic_start_xfer(i2c);
 
 	if (wait_event_timeout(i2c->wait, (i2c->state == STATE_ERROR) ||
-		(i2c->state == STATE_DONE), HZ))
+		(i2c->state == STATE_DONE), msecs_to_jiffies(1000)))
 		return (i2c->state == STATE_DONE) ? num : -EIO;
 	else {
 		i2c->tx_msg = NULL;

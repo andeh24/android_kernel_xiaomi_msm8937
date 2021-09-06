@@ -545,7 +545,7 @@ static int mpc_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 			writeccr(i2c, 0);
 			return -EINTR;
 		}
-		if (time_after(jiffies, orig_jiffies + HZ)) {
+		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(1000))) {
 			u8 status = readb(i2c->base + MPC_I2C_SR);
 
 			dev_dbg(i2c->dev, "timeout\n");
@@ -581,7 +581,7 @@ static int mpc_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 	orig_jiffies = jiffies;
 	/* Wait until STOP is seen, allow up to 1 s */
 	while (readb(i2c->base + MPC_I2C_SR) & CSR_MBB) {
-		if (time_after(jiffies, orig_jiffies + HZ)) {
+		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(1000))) {
 			u8 status = readb(i2c->base + MPC_I2C_SR);
 
 			dev_dbg(i2c->dev, "timeout\n");
@@ -611,7 +611,7 @@ static const struct i2c_algorithm mpc_algo = {
 static struct i2c_adapter mpc_ops = {
 	.owner = THIS_MODULE,
 	.algo = &mpc_algo,
-	.timeout = HZ,
+	.timeout = msecs_to_jiffies(1000),
 };
 
 static const struct of_device_id mpc_i2c_of_match[];
@@ -691,11 +691,11 @@ static int fsl_i2c_probe(struct platform_device *op)
 
 	prop = of_get_property(op->dev.of_node, "fsl,timeout", &plen);
 	if (prop && plen == sizeof(u32)) {
-		mpc_ops.timeout = *prop * HZ / 1000000;
+		mpc_ops.timeout = *prop * msecs_to_jiffies(1000) / 1000000;
 		if (mpc_ops.timeout < 5)
 			mpc_ops.timeout = 5;
 	}
-	dev_info(i2c->dev, "timeout %u us\n", mpc_ops.timeout * 1000000 / HZ);
+	dev_info(i2c->dev, "timeout %u us\n", mpc_ops.timeout * 1000000 / msecs_to_jiffies(1000));
 
 	platform_set_drvdata(op, i2c);
 

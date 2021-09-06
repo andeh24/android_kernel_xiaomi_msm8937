@@ -2343,7 +2343,7 @@ static int get_serial_info(struct edgeport_port *edge_port,
 	tmp.flags		= ASYNC_SKIP_TEST | ASYNC_AUTO_IRQ;
 	tmp.xmit_fifo_size	= edge_port->port->bulk_out_size;
 	tmp.baud_base		= 9600;
-	tmp.close_delay		= 5*HZ;
+	tmp.close_delay		= msecs_to_jiffies(5000);
 	tmp.closing_wait	= cwait;
 
 	if (copy_to_user(retinfo, &tmp, sizeof(*retinfo)))

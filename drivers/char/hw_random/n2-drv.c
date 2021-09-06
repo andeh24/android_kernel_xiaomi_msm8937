@@ -607,7 +607,7 @@ static void n2rng_work(struct work_struct *work)
 	}
 
 	if (err && !(np->flags & N2RNG_FLAG_SHUTDOWN))
-		schedule_delayed_work(&np->work, HZ * 2);
+		schedule_delayed_work(&np->work, msecs_to_jiffies(2000));
 }
 
 static void n2rng_driver_version(void)

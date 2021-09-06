@@ -109,7 +109,7 @@ static struct i2c_algo_bit_data parport_algo_data = {
 	.getsda		= parport_getsda,
 	.getscl		= parport_getscl,
 	.udelay		= 50,
-	.timeout	= HZ,
+	.timeout	= msecs_to_jiffies(1000),
 };
 
 /* ----- Driver registration ---------------------------------------------- */

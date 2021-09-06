@@ -247,7 +247,7 @@ static int cbus_i2c_probe(struct platform_device *pdev)
 	adapter->dev.parent	= &pdev->dev;
 	adapter->dev.of_node	= pdev->dev.of_node;
 	adapter->nr		= pdev->id;
-	adapter->timeout	= HZ;
+	adapter->timeout	= msecs_to_jiffies(1000);
 	adapter->algo		= &cbus_i2c_algo;
 	strlcpy(adapter->name, "CBUS I2C adapter", sizeof(adapter->name));
 

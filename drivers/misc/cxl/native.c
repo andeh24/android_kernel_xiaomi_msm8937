@@ -23,7 +23,7 @@ static int afu_control(struct cxl_afu *afu, u64 command,
 		       u64 result, u64 mask, bool enabled)
 {
 	u64 AFU_Cntl = cxl_p2n_read(afu, CXL_AFU_Cntl_An);
-	unsigned long timeout = jiffies + (HZ * CXL_TIMEOUT);
+	unsigned long timeout = jiffies + (msecs_to_jiffies(1000) * CXL_TIMEOUT);
 
 	spin_lock(&afu->afu_cntl_lock);
 	pr_devel("AFU command starting: %llx\n", command);
@@ -90,7 +90,7 @@ int cxl_psl_purge(struct cxl_afu *afu)
 	u64 AFU_Cntl = cxl_p2n_read(afu, CXL_AFU_Cntl_An);
 	u64 dsisr, dar;
 	u64 start, end;
-	unsigned long timeout = jiffies + (HZ * CXL_TIMEOUT);
+	unsigned long timeout = jiffies + (msecs_to_jiffies(1000) * CXL_TIMEOUT);
 
 	pr_devel("PSL purge request\n");
 
@@ -190,7 +190,7 @@ static void release_spa(struct cxl_afu *afu)
 
 int cxl_tlb_slb_invalidate(struct cxl *adapter)
 {
-	unsigned long timeout = jiffies + (HZ * CXL_TIMEOUT);
+	unsigned long timeout = jiffies + (msecs_to_jiffies(1000) * CXL_TIMEOUT);
 
 	pr_devel("CXL adapter wide TLBIA & SLBIA\n");
 
@@ -218,7 +218,7 @@ int cxl_tlb_slb_invalidate(struct cxl *adapter)
 
 int cxl_afu_slbia(struct cxl_afu *afu)
 {
-	unsigned long timeout = jiffies + (HZ * CXL_TIMEOUT);
+	unsigned long timeout = jiffies + (msecs_to_jiffies(1000) * CXL_TIMEOUT);
 
 	pr_devel("cxl_afu_slbia issuing SLBIA command\n");
 	cxl_p2n_write(afu, CXL_SLBIA_An, CXL_TLB_SLB_IQ_ALL);
@@ -277,7 +277,7 @@ static int do_process_element_cmd(struct cxl_context *ctx,
 				  u64 cmd, u64 pe_state)
 {
 	u64 state;
-	unsigned long timeout = jiffies + (HZ * CXL_TIMEOUT);
+	unsigned long timeout = jiffies + (msecs_to_jiffies(1000) * CXL_TIMEOUT);
 
 	WARN_ON(!ctx->afu->enabled);
 

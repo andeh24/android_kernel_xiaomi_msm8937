@@ -921,9 +921,9 @@ static int isd200_try_enum(struct us_data *us, unsigned char master_slave,
 	int recheckAsMaster = 0;
 
 	if ( detect )
-		endTime = jiffies + ISD200_ENUM_DETECT_TIMEOUT * HZ;
+		endTime = jiffies + ISD200_ENUM_DETECT_TIMEOUT * msecs_to_jiffies(1000);
 	else
-		endTime = jiffies + ISD200_ENUM_BSY_TIMEOUT * HZ;
+		endTime = jiffies + ISD200_ENUM_BSY_TIMEOUT * msecs_to_jiffies(1000);
 
 	/* loop until we detect !BSY or timeout */
 	while(1) {

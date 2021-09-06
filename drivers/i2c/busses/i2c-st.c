@@ -824,7 +824,7 @@ static int st_i2c_probe(struct platform_device *pdev)
 	i2c_set_adapdata(adap, i2c_dev);
 	snprintf(adap->name, sizeof(adap->name), "ST I2C(0x%pa)", &res->start);
 	adap->owner = THIS_MODULE;
-	adap->timeout = 2 * HZ;
+	adap->timeout = msecs_to_jiffies(2000);
 	adap->retries = 0;
 	adap->algo = &st_i2c_algo;
 	adap->dev.parent = &pdev->dev;

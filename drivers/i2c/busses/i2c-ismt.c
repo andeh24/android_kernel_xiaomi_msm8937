@@ -583,7 +583,7 @@ static int ismt_access(struct i2c_adapter *adap, u16 addr,
 	ismt_submit_desc(priv);
 
 	/* Now we wait for interrupt completion, 1s */
-	ret = wait_for_completion_timeout(&priv->cmp, HZ*1);
+	ret = wait_for_completion_timeout(&priv->cmp, msecs_to_jiffies(1000));
 
 	/* unmap the data buffer */
 	if (dma_size != 0)

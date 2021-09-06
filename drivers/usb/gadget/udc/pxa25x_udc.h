@@ -112,7 +112,7 @@ struct pxa25x_udc {
 						suspended : 1,
 						active : 1;
 
-#define start_watchdog(dev) mod_timer(&dev->timer, jiffies + (HZ/200))
+#define start_watchdog(dev) mod_timer(&dev->timer, jiffies + msecs_to_jiffies(5))
 	struct timer_list			timer;
 
 	struct device				*dev;

@@ -75,5 +75,5 @@ void __init time_init(void)
 		panic("Unable to initialise architected timer.\n");
 
 	/* Calibrate the delay loop directly */
-	lpj_fine = arch_timer_rate / HZ;
+	lpj_fine = arch_timer_rate / msecs_to_jiffies(1000);
 }

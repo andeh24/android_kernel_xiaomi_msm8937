@@ -272,7 +272,7 @@ static int tifm_7xx1_resume(struct pci_dev *dev)
 	if (good_sockets) {
 		fm->finish_me = &finish_resume;
 		spin_unlock_irqrestore(&fm->lock, flags);
-		rc = wait_for_completion_timeout(&finish_resume, HZ);
+		rc = wait_for_completion_timeout(&finish_resume, msecs_to_jiffies(1000));
 		dev_dbg(&dev->dev, "wait returned %d\n", rc);
 		writel(TIFM_IRQ_FIFOMASK(good_sockets)
 		       | TIFM_IRQ_CARDMASK(good_sockets),

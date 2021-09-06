@@ -1216,7 +1216,7 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 					(istatus & I2C_STATUS_BUS_MASTER)) {
 					timeout =
 					wait_for_completion_timeout(&complete,
-									HZ);
+									msecs_to_jiffies(1000));
 					if (timeout)
 						goto timeout_err;
 				}

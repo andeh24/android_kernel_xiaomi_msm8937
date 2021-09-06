@@ -650,7 +650,7 @@ static int i2c_bfin_twi_probe(struct platform_device *pdev)
 	p_adap->algo_data = iface;
 	p_adap->class = I2C_CLASS_DEPRECATED;
 	p_adap->dev.parent = &pdev->dev;
-	p_adap->timeout = 5 * HZ;
+	p_adap->timeout = msecs_to_jiffies(5000);
 	p_adap->retries = 3;
 
 	rc = peripheral_request_list(

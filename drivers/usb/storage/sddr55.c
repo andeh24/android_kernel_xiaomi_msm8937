@@ -833,7 +833,7 @@ static int sddr55_transport(struct scsi_cmnd *srb, struct us_data *us)
 	/* only check card status if the map isn't allocated, ie no card seen yet
 	 * or if it's been over half a second since we last accessed it
 	 */
-	if (info->lba_to_pba == NULL || time_after(jiffies, info->last_access + HZ/2)) {
+	if (info->lba_to_pba == NULL || time_after(jiffies, info->last_access + msecs_to_jiffies(1000)/2)) {
 
 		/* check to see if a card is fitted */
 		result = sddr55_status (us);

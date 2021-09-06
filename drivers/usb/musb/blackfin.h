@@ -80,7 +80,7 @@ static void dump_fifo_data(u8 *buf, u16 len)
 #define USB_DMA_REG(ep, reg)	(USB_DMA_BASE + 0x20 * ep + reg)
 
 /* Almost 1 second */
-#define TIMER_DELAY	(1 * HZ)
+#define TIMER_DELAY	msecs_to_jiffies(1000)
 
 static struct timer_list musb_conn_timer;
 

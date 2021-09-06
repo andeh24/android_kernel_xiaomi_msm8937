@@ -371,11 +371,11 @@ static int cpm_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 			ret = wait_event_timeout(cpm->i2c_wait,
 				(in_be16(&tbdf[tptr].cbd_sc) & BD_SC_NAK) ||
 				!(in_be16(&rbdf[rptr].cbd_sc) & BD_SC_EMPTY),
-				1 * HZ);
+				msecs_to_jiffies(1000));
 		else
 			ret = wait_event_timeout(cpm->i2c_wait,
 				!(in_be16(&tbdf[tptr].cbd_sc) & BD_SC_READY),
-				1 * HZ);
+				msecs_to_jiffies(1000));
 		if (ret == 0) {
 			ret = -EREMOTEIO;
 			dev_err(&adap->dev, "I2C transfer: timeout\n");

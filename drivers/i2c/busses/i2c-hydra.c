@@ -91,7 +91,7 @@ static struct i2c_algo_bit_data hydra_bit_data = {
 	.getsda		= hydra_bit_getsda,
 	.getscl		= hydra_bit_getscl,
 	.udelay		= 5,
-	.timeout	= HZ
+	.timeout	= msecs_to_jiffies(1000)
 };
 
 static struct i2c_adapter hydra_adap = {

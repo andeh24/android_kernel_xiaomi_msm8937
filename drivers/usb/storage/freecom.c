@@ -433,7 +433,7 @@ static int init_freecom(struct us_data *us)
 	 */
 
 	result = usb_stor_control_msg(us, us->recv_ctrl_pipe,
-			0x4c, 0xc0, 0x4346, 0x0, buffer, 0x20, 3*HZ);
+			0x4c, 0xc0, 0x4346, 0x0, buffer, 0x20, msecs_to_jiffies(3000));
 	buffer[32] = '\0';
 	usb_stor_dbg(us, "String returned from FC init is: %s\n", buffer);
 
@@ -445,7 +445,7 @@ static int init_freecom(struct us_data *us)
 
 	/* send reset */
 	result = usb_stor_control_msg(us, us->send_ctrl_pipe,
-			0x4d, 0x40, 0x24d8, 0x0, NULL, 0x0, 3*HZ);
+			0x4d, 0x40, 0x24d8, 0x0, NULL, 0x0, msecs_to_jiffies(3000));
 	usb_stor_dbg(us, "result from activate reset is %d\n", result);
 
 	/* wait 250ms */
@@ -453,7 +453,7 @@ static int init_freecom(struct us_data *us)
 
 	/* clear reset */
 	result = usb_stor_control_msg(us, us->send_ctrl_pipe,
-			0x4d, 0x40, 0x24f8, 0x0, NULL, 0x0, 3*HZ);
+			0x4d, 0x40, 0x24f8, 0x0, NULL, 0x0, msecs_to_jiffies(3000));
 	usb_stor_dbg(us, "result from clear reset is %d\n", result);
 
 	/* wait 3 seconds */

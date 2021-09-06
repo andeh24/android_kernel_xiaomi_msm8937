@@ -445,7 +445,7 @@ static int tower_release (struct inode *inode, struct file *file)
 
 	/* wait until write transfer is finished */
 	if (dev->interrupt_out_busy) {
-		wait_event_interruptible_timeout (dev->write_wait, !dev->interrupt_out_busy, 2 * HZ);
+		wait_event_interruptible_timeout (dev->write_wait, !dev->interrupt_out_busy, msecs_to_jiffies(2000));
 	}
 	tower_abort_transfers (dev);
 	dev->open_count = 0;
@@ -568,7 +568,7 @@ static ssize_t tower_read (struct file *file, char __user *buffer, size_t count,
 	}
 
 	if (read_timeout) {
-		timeout = jiffies + read_timeout * HZ / 1000;
+		timeout = jiffies + read_timeout * msecs_to_jiffies(1000) / 1000;
 	}
 
 	/* wait for data */
@@ -586,7 +586,7 @@ static ssize_t tower_read (struct file *file, char __user *buffer, size_t count,
 		/* reset read timeout during read or write activity */
 		if (read_timeout
 		    && (dev->read_buffer_length || dev->interrupt_out_busy)) {
-			timeout = jiffies + read_timeout * HZ / 1000;
+			timeout = jiffies + read_timeout * msecs_to_jiffies(1000) / 1000;
 		}
 		/* check for read timeout */
 		if (read_timeout && time_after (jiffies, timeout)) {
@@ -826,7 +826,7 @@ static int tower_probe (struct usb_interface *interface, const struct usb_device
 	dev->read_buffer_length = 0;
 	dev->read_packet_length = 0;
 	spin_lock_init (&dev->read_buffer_lock);
-	dev->packet_timeout_jiffies = packet_timeout * HZ / 1000;
+	dev->packet_timeout_jiffies = packet_timeout * msecs_to_jiffies(1000) / 1000;
 	dev->read_last_arrival = jiffies;
 
 	init_waitqueue_head (&dev->read_wait);

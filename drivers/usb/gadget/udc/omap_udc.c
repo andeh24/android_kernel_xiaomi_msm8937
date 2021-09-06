@@ -1855,7 +1855,7 @@ static irqreturn_t omap_udc_irq(int irq, void *_udc)
 }
 
 /* workaround for seemingly-lost IRQs for RX ACKs... */
-#define PIO_OUT_TIMEOUT	(jiffies + HZ/3)
+#define PIO_OUT_TIMEOUT	(jiffies + msecs_to_jiffies(1000)/3)
 #define HALF_FULL(f)	(!((f)&(UDC_NON_ISO_FIFO_FULL|UDC_NON_ISO_FIFO_EMPTY)))
 
 static void pio_out_timer(unsigned long _ep)

@@ -832,7 +832,7 @@ static int mv_otg_probe(struct platform_device *pdev)
 
 	spin_lock_init(&mvotg->wq_lock);
 	if (spin_trylock(&mvotg->wq_lock)) {
-		mv_otg_run_state_machine(mvotg, 2 * HZ);
+		mv_otg_run_state_machine(mvotg, msecs_to_jiffies(2000));
 		spin_unlock(&mvotg->wq_lock);
 	}
 

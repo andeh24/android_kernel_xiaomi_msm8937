@@ -175,7 +175,7 @@ iop3xx_i2c_wait_event(struct i2c_algo_iop3xx_data *iop3xx_adap,
 		interrupted = wait_event_interruptible_timeout (
 			iop3xx_adap->waitq,
 			(done = compare( sr = iop3xx_i2c_get_srstat(iop3xx_adap) ,flags )),
-			1 * HZ
+			msecs_to_jiffies(1000)
 			);
 		if ((rc = iop3xx_i2c_error(sr)) < 0) {
 			*status = sr;
@@ -479,7 +479,7 @@ iop3xx_i2c_probe(struct platform_device *pdev)
 	/*
 	 * Default values...should these come in from board code?
 	 */
-	new_adapter->timeout = HZ;
+	new_adapter->timeout = msecs_to_jiffies(1000);
 	new_adapter->algo = &iop3xx_i2c_algo;
 
 	init_waitqueue_head(&adapter_data->waitq);

@@ -2305,7 +2305,7 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 	spin_lock_init(&ts->irq_lock);
 
 #if GTP_ESD_PROTECT
-	ts->clk_tick_cnt = 2 * HZ;
+	ts->clk_tick_cnt = msecs_to_jiffies(2000);
 	GTP_DEBUG("Clock ticks for an esd cycle: %d", ts->clk_tick_cnt);
 	spin_lock_init(&ts->esd_lock);
 
@@ -2992,7 +2992,7 @@ static int __init goodix_ts_init(void)
 #endif
 
 #if GTP_CHARGER_SWITCH
-	clk_tick_cnt_charger = 2*HZ;
+	clk_tick_cnt_charger = msecs_to_jiffies(2000);
 	INIT_DELAYED_WORK(&gtp_charger_check_work, gtp_charger_check_func);
 	gtp_workqueue_charger = create_workqueue("charger-workqueue");
 #endif

@@ -311,7 +311,7 @@ void mic_prepare_suspend(struct mic_device *mdev)
 {
 	int rc;
 
-#define MIC_SUSPEND_TIMEOUT (60 * HZ)
+#define MIC_SUSPEND_TIMEOUT msecs_to_jiffes(60000)
 
 	mutex_lock(&mdev->mic_mutex);
 	switch (mdev->state) {

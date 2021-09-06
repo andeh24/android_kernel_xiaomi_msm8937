@@ -32,7 +32,7 @@
 #include <linux/workqueue.h>
 
 /* if data isn't read by userspace after 5 minutes then delete it */
-#define DEVCD_TIMEOUT	(HZ * 60 * 5)
+#define DEVCD_TIMEOUT	(msecs_to_jiffies(1000) * 60 * 5)
 
 struct devcd_entry {
 	struct device devcd_dev;
