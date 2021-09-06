@@ -45,7 +45,7 @@ static int base[MAX_DEVICES] = { 0x820, 0x840 };
 module_param_array(base, int, NULL, 0);
 MODULE_PARM_DESC(base, "Base addresses for the ACCESS.bus controllers");
 
-#define POLL_TIMEOUT	(HZ/5)
+#define POLL_TIMEOUT	msecs_to_jiffies(200)
 
 enum scx200_acb_state {
 	state_idle,

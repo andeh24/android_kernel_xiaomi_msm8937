@@ -43,12 +43,12 @@
 #define DIGI_IN_BUF_SIZE		64
 
 /* retry timeout while sleeping */
-#define DIGI_RETRY_TIMEOUT		(HZ/10)
+#define DIGI_RETRY_TIMEOUT		msecs_to_jiffies(100)
 
 /* timeout while waiting for tty output to drain in close */
 /* this delay is used twice in close, so the total delay could */
 /* be twice this value */
-#define DIGI_CLOSE_TIMEOUT		(5*HZ)
+#define DIGI_CLOSE_TIMEOUT		msecs_to_jiffies(5000)
 
 
 /* AccelePort USB Defines */

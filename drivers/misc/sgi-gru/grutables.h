@@ -265,13 +265,13 @@ extern struct mcs_op_statistic mcs_op_statistics[mcsop_last];
 #define IRQ_GRU			110	/* Starting IRQ number for interrupts */
 
 /* Delay in jiffies between attempts to assign a GRU context */
-#define GRU_ASSIGN_DELAY	((HZ * 20) / 1000)
+#define GRU_ASSIGN_DELAY	msecs_to_jiffies(20)
 
 /*
  * If a process has it's context stolen, min delay in jiffies before trying to
  * steal a context from another process.
  */
-#define GRU_STEAL_DELAY		((HZ * 200) / 1000)
+#define GRU_STEAL_DELAY		msecs_to_jiffies(200)
 
 #define STAT(id)	do {						\
 				if (gru_options & OPT_STATS)		\

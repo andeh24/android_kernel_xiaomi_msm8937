@@ -114,7 +114,7 @@ static void xgene_rng_start_timer(struct xgene_rng_dev *ctx)
 {
 	ctx->failure_timer.data = (unsigned long) ctx;
 	ctx->failure_timer.function = xgene_rng_expired_timer;
-	ctx->failure_timer.expires = jiffies + 120 * HZ;
+	ctx->failure_timer.expires = jiffies + msecs_to_jiffies(120000);
 	add_timer(&ctx->failure_timer);
 }
 
@@ -189,7 +189,7 @@ static void xgene_rng_chk_overflow(struct xgene_rng_dev *ctx)
 			xgene_rng_start_timer(ctx);
 		} else {
 			/* 2nd time failure in lesser than 1 minute? */
-			if (time_after(ctx->failure_ts + 60 * HZ, jiffies)) {
+			if (time_after(ctx->failure_ts + msecs_to_jiffies(600000), jiffies)) {
 				dev_err(ctx->dev,
 					"FRO shutdown failure error 0x%08X\n",
 					val);

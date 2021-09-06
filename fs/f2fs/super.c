@@ -1622,7 +1622,7 @@ repeat:
 		page = read_cache_page_gfp(mapping, blkidx, GFP_NOFS);
 		if (IS_ERR(page)) {
 			if (PTR_ERR(page) == -ENOMEM) {
-				congestion_wait(BLK_RW_ASYNC, HZ/50);
+				congestion_wait(BLK_RW_ASYNC, msecs_to_jiffies(20));
 				goto repeat;
 			}
 			return PTR_ERR(page);
@@ -1674,7 +1674,7 @@ retry:
 							&page, NULL);
 		if (unlikely(err)) {
 			if (err == -ENOMEM) {
-				congestion_wait(BLK_RW_ASYNC, HZ/50);
+				congestion_wait(BLK_RW_ASYNC, msecs_to_jiffies(20));
 				goto retry;
 			}
 			break;

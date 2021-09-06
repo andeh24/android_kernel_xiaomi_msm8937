@@ -1679,7 +1679,7 @@ static int imx21_hc_reset(struct usb_hcd *hcd)
 		imx21->regs + USBOTG_RST_CTRL);
 
 	/* Wait for reset to finish */
-	timeout = jiffies + HZ;
+	timeout = jiffies + msecs_to_jiffies(1000);
 	while (readl(imx21->regs + USBOTG_RST_CTRL) != 0) {
 		if (time_after(jiffies, timeout)) {
 			spin_unlock_irqrestore(&imx21->lock, flags);

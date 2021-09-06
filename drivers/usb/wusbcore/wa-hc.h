@@ -259,7 +259,7 @@ enum {
 	 * period of time */
 	HWAHC_EPROTO_MAX = 16,
 	/** Period of time for EPROTO errors (in jiffies) */
-	HWAHC_EPROTO_PERIOD = 4 * HZ,
+	HWAHC_EPROTO_PERIOD = msecs_to_jiffies(4000),
 };
 
 

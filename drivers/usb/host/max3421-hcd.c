@@ -1291,7 +1291,7 @@ max3421_handle_irqs(struct usb_hcd *hcd)
 		char sbuf[16 * 16], *dp, *end;
 		int i;
 
-		if (jiffies - last_time > 5*HZ) {
+		if (jiffies - last_time > msecs_to_jiffies(5000)) {
 			dp = sbuf;
 			end = sbuf + sizeof(sbuf);
 			*dp = '\0';

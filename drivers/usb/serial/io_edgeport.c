@@ -55,7 +55,7 @@
 
 #define MAX_NAME_LEN		64
 
-#define OPEN_TIMEOUT		(5*HZ)		/* 5 seconds */
+#define OPEN_TIMEOUT		msecs_to_jiffies(5000)		/* 5 seconds */
 
 /* receive port state */
 enum RXSTATE {
@@ -932,7 +932,7 @@ static void block_until_chase_response(struct edgeport_port *edge_port)
 	struct device *dev = &edge_port->port->dev;
 	DEFINE_WAIT(wait);
 	__u16 lastCredits;
-	int timeout = 1*HZ;
+	int timeout = msecs_to_jiffies(1000);
 	int loop = 10;
 
 	while (1) {
@@ -990,7 +990,7 @@ static void block_until_tx_empty(struct edgeport_port *edge_port)
 	DEFINE_WAIT(wait);
 	struct TxFifo *fifo = &edge_port->txfifo;
 	__u32 lastCount;
-	int timeout = HZ/10;
+	int timeout = msecs_to_jiffies(100);
 	int loop = 30;
 
 	while (1) {
@@ -1568,8 +1568,8 @@ static int get_serial_info(struct edgeport_port *edge_port,
 	tmp.flags		= ASYNC_SKIP_TEST | ASYNC_AUTO_IRQ;
 	tmp.xmit_fifo_size	= edge_port->maxTxCredits;
 	tmp.baud_base		= 9600;
-	tmp.close_delay		= 5*HZ;
-	tmp.closing_wait	= 30*HZ;
+	tmp.close_delay		= msecs_to_jiffies(5000);
+	tmp.closing_wait	= msecs_to_jiffies(30000);
 
 	if (copy_to_user(retinfo, &tmp, sizeof(*retinfo)))
 		return -EFAULT;

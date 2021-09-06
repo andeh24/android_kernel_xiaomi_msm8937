@@ -349,8 +349,8 @@ static int get_serial_info(struct usb_serial_port *port,
 	tmp.flags		= ASYNC_SKIP_TEST | ASYNC_AUTO_IRQ;
 	tmp.xmit_fifo_size	= 1024;
 	tmp.baud_base		= 9600;
-	tmp.close_delay		= 5*HZ;
-	tmp.closing_wait	= 30*HZ;
+	tmp.close_delay		= msecs_to_jiffies(5000);
+	tmp.closing_wait	= msecs_to_jiffies(30000);
 
 	if (copy_to_user(serial, &tmp, sizeof(*serial)))
 		return -EFAULT;

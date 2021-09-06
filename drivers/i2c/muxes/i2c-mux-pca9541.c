@@ -65,8 +65,8 @@
 #define busoff(x)	(!((x) & BUSON) || ((x) & BUSON) == BUSON)
 
 /* arbitration timeouts, in jiffies */
-#define ARB_TIMEOUT	(HZ / 8)	/* 125 ms until forcing bus ownership */
-#define ARB2_TIMEOUT	(HZ / 4)	/* 250 ms until acquisition failure */
+#define ARB_TIMEOUT	msecs_to_jiffies(125)	/* 125 ms until forcing bus ownership */
+#define ARB2_TIMEOUT	msecs_to_jiffies(250)	/* 250 ms until acquisition failure */
 
 /* arbitration retry delays, in us */
 #define SELECT_DELAY_SHORT	50

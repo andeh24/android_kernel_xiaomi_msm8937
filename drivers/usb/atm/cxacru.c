@@ -927,7 +927,7 @@ reschedule:
 
 	if (keep_polling)
 		schedule_delayed_work(&instance->poll_work,
-				round_jiffies_relative(POLL_INTERVAL*HZ));
+				round_jiffies_relative(POLL_INTERVAL*msecs_to_jiffies(1000)));
 }
 
 static int cxacru_fw(struct usb_device *usb_dev, enum cxacru_fw_request fw,

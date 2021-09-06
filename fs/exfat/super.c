@@ -3080,7 +3080,7 @@ static void exfat_write_super(struct super_block *sb)
 	sync_blockdev(sb->s_bdev);
 
 	MMSG("BD: exfat_write_super (bdev_sync for %ld ms)\n",
-			(jiffies - time) * 1000 / HZ);
+			(jiffies - time) * msecs_to_jiffies(1));
 }
 
 /* synchronize a file system volume */

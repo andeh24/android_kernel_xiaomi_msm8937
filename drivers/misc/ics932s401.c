@@ -88,10 +88,10 @@ static int regs_to_copy[NUM_MIRRORED_REGS] = {
 };
 
 /* How often do we reread sensors values? (In jiffies) */
-#define SENSOR_REFRESH_INTERVAL	(2 * HZ)
+#define SENSOR_REFRESH_INTERVAL	msecs_to_jiffies(2000)
 
 /* How often do we reread sensor limit values? (In jiffies) */
-#define LIMIT_REFRESH_INTERVAL	(60 * HZ)
+#define LIMIT_REFRESH_INTERVAL	msecs_to_jiffies(60000)
 
 struct ics932s401_data {
 	struct attribute_group	attrs;

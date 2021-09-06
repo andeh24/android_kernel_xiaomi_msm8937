@@ -260,7 +260,7 @@ static int keyspan_write(struct tty_struct *tty,
 
 		if (this_urb->status == -EINPROGRESS) {
 			if (time_before(jiffies,
-					p_priv->tx_start_time[flip] + 10 * HZ))
+					p_priv->tx_start_time[flip] + 10 * msecs_to_jiffies(1000)))
 				break;
 			usb_unlink_urb(this_urb);
 			break;

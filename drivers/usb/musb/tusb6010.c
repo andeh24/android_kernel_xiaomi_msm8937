@@ -649,7 +649,7 @@ tusb_otg_ints(struct musb *musb, u32 int_src, void __iomem *tbase)
 
 		/* Don't allow idling immediately */
 		if (default_a)
-			idle_timeout = jiffies + (HZ * 3);
+			idle_timeout = jiffies + msecs_to_jiffies(3000);
 	}
 
 	/* VBUS state change */
@@ -677,7 +677,7 @@ tusb_otg_ints(struct musb *musb, u32 int_src, void __iomem *tbase)
 			}
 			dev_dbg(musb->controller, "vbus change, %s, otg %03x\n",
 				usb_otg_state_string(musb->xceiv->state), otg_stat);
-			idle_timeout = jiffies + (1 * HZ);
+			idle_timeout = jiffies + msecs_to_jiffies(1000);
 			schedule_work(&musb->irq_work);
 
 		} else /* A-dev state machine */ {
@@ -699,7 +699,7 @@ tusb_otg_ints(struct musb *musb, u32 int_src, void __iomem *tbase)
 				 * OPT FS A TD.4.6 needs few seconds for
 				 * A_WAIT_VRISE
 				 */
-				idle_timeout = jiffies + (2 * HZ);
+				idle_timeout = jiffies + msecs_to_jiffies(2000);
 
 				break;
 			case OTG_STATE_A_WAIT_VRISE:

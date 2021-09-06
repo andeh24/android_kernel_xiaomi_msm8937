@@ -164,7 +164,7 @@ void ibmasm_wait_for_response(struct command *cmd, int timeout)
 	wait_event_interruptible_timeout(cmd->wait,
 				cmd->status == IBMASM_CMD_COMPLETE ||
 				cmd->status == IBMASM_CMD_FAILED,
-				timeout * HZ);
+				timeout * msecs_to_jiffies(1000));
 }
 
 /**

@@ -118,8 +118,8 @@ static int c_show(struct seq_file *m, void *v)
 #endif
 
 		seq_printf(m, "BogoMIPS\t: %lu.%02lu\n",
-			   loops_per_jiffy / (500000UL/HZ),
-			   loops_per_jiffy / (5000UL/HZ) % 100);
+			   loops_per_jiffy / (500000UL/msecs_to_jiffies(1000)),
+			   loops_per_jiffy / (5000UL/msecs_to_jiffies(1000)) % 100);
 
 		/*
 		 * Dump out the common processor features in a single line.

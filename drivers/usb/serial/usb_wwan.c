@@ -204,7 +204,7 @@ int usb_wwan_write(struct tty_struct *tty, struct usb_serial_port *port,
 		this_urb = portdata->out_urbs[i];
 		if (test_and_set_bit(i, &portdata->out_busy)) {
 			if (time_before(jiffies,
-					portdata->tx_start_time[i] + 10 * HZ))
+					portdata->tx_start_time[i] + 10 * msecs_to_jiffies(1000)))
 				continue;
 			usb_unlink_urb(this_urb);
 			continue;

@@ -197,7 +197,7 @@ xpc_hb_beater(unsigned long dummy)
 	if (time_is_before_eq_jiffies(xpc_hb_check_timeout))
 		wake_up_interruptible(&xpc_activate_IRQ_wq);
 
-	xpc_hb_timer.expires = jiffies + (xpc_hb_interval * HZ);
+	xpc_hb_timer.expires = jiffies + (xpc_hb_interval * msecs_to_jiffies(1000));
 	add_timer(&xpc_hb_timer);
 }
 
@@ -263,7 +263,7 @@ xpc_hb_checker(void *ignore)
 	set_cpus_allowed_ptr(current, cpumask_of(XPC_HB_CHECK_CPU));
 
 	/* set our heartbeating to other partitions into motion */
-	xpc_hb_check_timeout = jiffies + (xpc_hb_check_interval * HZ);
+	xpc_hb_check_timeout = jiffies + (xpc_hb_check_interval * msecs_to_jiffies(1000));
 	xpc_start_hb_beater();
 
 	while (!xpc_exiting) {
@@ -276,7 +276,7 @@ xpc_hb_checker(void *ignore)
 		/* checking of remote heartbeats is skewed by IRQ handling */
 		if (time_is_before_eq_jiffies(xpc_hb_check_timeout)) {
 			xpc_hb_check_timeout = jiffies +
-			    (xpc_hb_check_interval * HZ);
+			    (xpc_hb_check_interval * msecs_to_jiffies(1000));
 
 			dev_dbg(xpc_part, "checking remote heartbeats\n");
 			xpc_check_remote_hb();
@@ -981,7 +981,7 @@ xpc_do_exit(enum xp_retval reason)
 
 	/* wait for all partitions to become inactive */
 
-	printmsg_time = jiffies + (XPC_DEACTIVATE_PRINTMSG_INTERVAL * HZ);
+	printmsg_time = jiffies + (XPC_DEACTIVATE_PRINTMSG_INTERVAL * msecs_to_jiffies(1000));
 	xpc_disengage_timedout = 0;
 
 	do {
@@ -1008,9 +1008,9 @@ xpc_do_exit(enum xp_retval reason)
 				dev_info(xpc_part, "waiting for remote "
 					 "partitions to deactivate, timeout in "
 					 "%ld seconds\n", (disengage_timeout -
-					 jiffies) / HZ);
+					 jiffies) / msecs_to_jiffies(1000));
 				printmsg_time = jiffies +
-				    (XPC_DEACTIVATE_PRINTMSG_INTERVAL * HZ);
+				    (XPC_DEACTIVATE_PRINTMSG_INTERVAL * msecs_to_jiffies(1000));
 				printed_waiting_msg = 1;
 			}
 

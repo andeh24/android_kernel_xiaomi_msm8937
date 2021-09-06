@@ -336,7 +336,7 @@ void c67x00_endpoint_disable(struct usb_hcd *hcd, struct usb_host_endpoint *ep)
 		 * while loop handle such cases, but this might be improved */
 		reinit_completion(&c67x00->endpoint_disable);
 		c67x00_sched_kick(c67x00);
-		wait_for_completion_timeout(&c67x00->endpoint_disable, 1 * HZ);
+		wait_for_completion_timeout(&c67x00->endpoint_disable, msecs_to_jiffies(1000));
 
 		spin_lock_irqsave(&c67x00->lock, flags);
 	}

@@ -263,7 +263,7 @@ static void fpga_disable_power_supplies(struct fpga_dev *priv)
 	msleep(500);
 
 	start = jiffies;
-	while (time_before(jiffies, start + HZ)) {
+	while (time_before(jiffies, start + msecs_to_jiffies(1000))) {
 		val = ioread8(priv->regs + CTL_PWR_STATUS);
 		if (!(val & PWR_STATUS_GOOD))
 			break;
@@ -302,7 +302,7 @@ static int fpga_enable_power_supplies(struct fpga_dev *priv)
 	}
 
 	iowrite8(PWR_CONTROL_ENABLE, priv->regs + CTL_PWR_CONTROL);
-	while (time_before(jiffies, start + HZ)) {
+	while (time_before(jiffies, start + msecs_to_jiffies(1000))) {
 		if (fpga_power_good(priv))
 			return 0;
 
@@ -364,7 +364,7 @@ static int fpga_program_block(struct fpga_dev *priv, void *buf, size_t count)
 
 		/* Get the size of the block to write (maximum is FIFO_SIZE) */
 		len = min_t(size_t, count, size);
-		timeout = jiffies + HZ / 4;
+		timeout = jiffies + msecs_to_jiffies(250);
 
 		/* Write the block */
 		for (i = 0; i < len / 4; i++)
@@ -432,7 +432,7 @@ static noinline int fpga_program_cpu(struct fpga_dev *priv)
 		goto out_disable_controller;
 
 	/* Wait for the interrupt handler to signal that programming finished */
-	ret = wait_for_completion_timeout(&priv->completion, 2 * HZ);
+	ret = wait_for_completion_timeout(&priv->completion, msecs_to_jiffies(2000));
 	if (!ret) {
 		dev_err(priv->dev, "Timed out waiting for completion\n");
 		ret = -ETIMEDOUT;
@@ -559,7 +559,7 @@ static noinline int fpga_program_dma(struct fpga_dev *priv)
 	dev_dbg(priv->dev, "enabled the controller\n");
 
 	/* Wait for the interrupt handler to signal that programming finished */
-	ret = wait_for_completion_timeout(&priv->completion, 2 * HZ);
+	ret = wait_for_completion_timeout(&priv->completion, msecs_to_jiffies(2000));
 	if (!ret) {
 		dev_err(priv->dev, "Timed out waiting for completion\n");
 		ret = -ETIMEDOUT;

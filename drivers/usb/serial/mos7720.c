@@ -1854,8 +1854,8 @@ static int get_serial_info(struct moschip_port *mos7720_port,
 	tmp.flags		= ASYNC_SKIP_TEST | ASYNC_AUTO_IRQ;
 	tmp.xmit_fifo_size	= NUM_URBS * URB_TRANSFER_BUFFER_SIZE;
 	tmp.baud_base		= 9600;
-	tmp.close_delay		= 5*HZ;
-	tmp.closing_wait	= 30*HZ;
+	tmp.close_delay		= msecs_to_jiffies(5000);
+	tmp.closing_wait	= msecs_to_jiffies(30000);
 
 	if (copy_to_user(retinfo, &tmp, sizeof(*retinfo)))
 		return -EFAULT;

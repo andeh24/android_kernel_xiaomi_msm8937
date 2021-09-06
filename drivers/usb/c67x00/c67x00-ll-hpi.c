@@ -251,7 +251,7 @@ static inline int ll_recv_msg(struct c67x00_device *dev)
 {
 	u16 res;
 
-	res = wait_for_completion_timeout(&dev->hpi.lcp.msg_received, 5 * HZ);
+	res = wait_for_completion_timeout(&dev->hpi.lcp.msg_received, msecs_to_jiffies(5000));
 	WARN_ON(!res);
 
 	return (res == 0) ? -EIO : 0;

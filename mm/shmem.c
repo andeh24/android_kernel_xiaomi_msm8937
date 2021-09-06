@@ -1896,7 +1896,7 @@ static int shmem_wait_for_pins(struct address_space *mapping)
 
 		if (!scan)
 			lru_add_drain_all();
-		else if (schedule_timeout_killable((HZ << scan) / 200))
+		else if (schedule_timeout_killable((msecs_to_jiffies(1000) << scan) / 200))
 			scan = LAST_SCAN;
 
 		start = 0;

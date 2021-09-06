@@ -79,7 +79,7 @@ static int test_cipher_jiffies(struct blkcipher_desc *desc, int enc,
 	int bcount;
 	int ret;
 
-	for (start = jiffies, end = start + secs * HZ, bcount = 0;
+	for (start = jiffies, end = start + secs * msecs_to_jiffies(1000), bcount = 0;
 	     time_before(jiffies, end); bcount++) {
 		if (enc)
 			ret = crypto_blkcipher_encrypt(desc, sg, sg, blen);
@@ -149,7 +149,7 @@ static int test_aead_jiffies(struct aead_request *req, int enc,
 	int bcount;
 	int ret;
 
-	for (start = jiffies, end = start + secs * HZ, bcount = 0;
+	for (start = jiffies, end = start + secs * msecs_to_jiffies(1000), bcount = 0;
 	     time_before(jiffies, end); bcount++) {
 		if (enc)
 			ret = crypto_aead_encrypt(req);
@@ -519,7 +519,7 @@ static int test_hash_jiffies_digest(struct hash_desc *desc,
 	int bcount;
 	int ret;
 
-	for (start = jiffies, end = start + secs * HZ, bcount = 0;
+	for (start = jiffies, end = start + secs * msecs_to_jiffies(1000), bcount = 0;
 	     time_before(jiffies, end); bcount++) {
 		ret = crypto_hash_digest(desc, sg, blen, out);
 		if (ret)
@@ -542,7 +542,7 @@ static int test_hash_jiffies(struct hash_desc *desc, struct scatterlist *sg,
 	if (plen == blen)
 		return test_hash_jiffies_digest(desc, sg, blen, out, secs);
 
-	for (start = jiffies, end = start + secs * HZ, bcount = 0;
+	for (start = jiffies, end = start + secs * msecs_to_jiffies(1000), bcount = 0;
 	     time_before(jiffies, end); bcount++) {
 		ret = crypto_hash_init(desc);
 		if (ret)
@@ -779,7 +779,7 @@ static int test_ahash_jiffies_digest(struct ahash_request *req, int blen,
 	int bcount;
 	int ret;
 
-	for (start = jiffies, end = start + secs * HZ, bcount = 0;
+	for (start = jiffies, end = start + secs * msecs_to_jiffies(1000), bcount = 0;
 	     time_before(jiffies, end); bcount++) {
 		ret = do_one_ahash_op(req, crypto_ahash_digest(req));
 		if (ret)
@@ -802,7 +802,7 @@ static int test_ahash_jiffies(struct ahash_request *req, int blen,
 	if (plen == blen)
 		return test_ahash_jiffies_digest(req, blen, out, secs);
 
-	for (start = jiffies, end = start + secs * HZ, bcount = 0;
+	for (start = jiffies, end = start + secs * msecs_to_jiffies(1000), bcount = 0;
 	     time_before(jiffies, end); bcount++) {
 		ret = crypto_ahash_init(req);
 		if (ret)
@@ -1009,7 +1009,7 @@ static int test_acipher_jiffies(struct ablkcipher_request *req, int enc,
 	int bcount;
 	int ret;
 
-	for (start = jiffies, end = start + secs * HZ, bcount = 0;
+	for (start = jiffies, end = start + secs * msecs_to_jiffies(1000), bcount = 0;
 	     time_before(jiffies, end); bcount++) {
 		if (enc)
 			ret = do_one_acipher_op(req,

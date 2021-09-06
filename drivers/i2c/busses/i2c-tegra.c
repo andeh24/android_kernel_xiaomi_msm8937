@@ -240,7 +240,7 @@ static void tegra_i2c_unmask_irq(struct tegra_i2c_dev *i2c_dev, u32 mask)
 
 static int tegra_i2c_flush_fifos(struct tegra_i2c_dev *i2c_dev)
 {
-	unsigned long timeout = jiffies + HZ;
+	unsigned long timeout = jiffies + msecs_to_jiffies(1000);
 	u32 val = i2c_readl(i2c_dev, I2C_FIFO_CONTROL);
 	val |= I2C_FIFO_CONTROL_TX_FLUSH | I2C_FIFO_CONTROL_RX_FLUSH;
 	i2c_writel(i2c_dev, val, I2C_FIFO_CONTROL);

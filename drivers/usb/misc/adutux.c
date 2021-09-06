@@ -59,7 +59,7 @@ MODULE_DEVICE_TABLE(usb, device_table);
 /* we can have up to this number of device plugged in at once */
 #define MAX_DEVICES	16
 
-#define COMMAND_TIMEOUT	(2*HZ)	/* 60 second timeout for a command */
+#define COMMAND_TIMEOUT	msecs_to_jiffies(2000)	/* 60 second timeout for a command */
 
 /*
  * The locking scheme is a vanilla 3-lock:

@@ -350,7 +350,7 @@ static int rts51x_get_max_lun(struct us_data *us)
 				      US_BULK_GET_MAX_LUN,
 				      USB_DIR_IN | USB_TYPE_CLASS |
 				      USB_RECIP_INTERFACE,
-				      0, us->ifnum, us->iobuf, 1, 10 * HZ);
+				      0, us->ifnum, us->iobuf, 1, msecs_to_jiffies(10000));
 
 	usb_stor_dbg(us, "GetMaxLUN command result is %d, data is %d\n",
 		     result, us->iobuf[0]);

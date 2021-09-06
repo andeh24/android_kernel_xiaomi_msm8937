@@ -257,7 +257,7 @@ void usb_serial_generic_wait_until_sent(struct tty_struct *tty, long timeout)
 	 * Use a poll-period of roughly the time it takes to send one
 	 * character or at least one jiffy.
 	 */
-	period = max_t(unsigned long, (10 * HZ / bps), 1);
+	period = max_t(unsigned long, (10 * msecs_to_jiffies(1000) / bps), 1);
 	if (timeout)
 		period = min_t(unsigned long, period, timeout);
 
@@ -561,7 +561,7 @@ EXPORT_SYMBOL_GPL(usb_serial_handle_sysrq_char);
 int usb_serial_handle_break(struct usb_serial_port *port)
 {
 	if (!port->sysrq) {
-		port->sysrq = jiffies + HZ*5;
+		port->sysrq = jiffies + msecs_to_jiffies(5000);
 		return 1;
 	}
 	port->sysrq = 0;

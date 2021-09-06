@@ -243,7 +243,7 @@ retry:
 								LOOKUP_NODE);
 			if (err) {
 				if (err == -ENOMEM) {
-					congestion_wait(BLK_RW_ASYNC, HZ/50);
+					congestion_wait(BLK_RW_ASYNC, msecs_to_jiffies(20));
 					cond_resched();
 					goto retry;
 				}
@@ -307,7 +307,7 @@ drop:
 		iput(inode);
 	}
 skip:
-	congestion_wait(BLK_RW_ASYNC, HZ/50);
+	congestion_wait(BLK_RW_ASYNC, msecs_to_jiffies(20));
 	cond_resched();
 	goto next;
 }
@@ -400,7 +400,7 @@ retry:
 			err = f2fs_do_write_data_page(&fio);
 			if (err) {
 				if (err == -ENOMEM) {
-					congestion_wait(BLK_RW_ASYNC, HZ/50);
+					congestion_wait(BLK_RW_ASYNC, msecs_to_jiffies(20));
 					cond_resched();
 					goto retry;
 				}
@@ -2680,7 +2680,7 @@ next:
 			blk_finish_plug(&plug);
 			mutex_unlock(&dcc->cmd_lock);
 			trimmed += __wait_all_discard_cmd(sbi, NULL);
-			congestion_wait(BLK_RW_ASYNC, HZ/50);
+			congestion_wait(BLK_RW_ASYNC, msecs_to_jiffies(20));
 			goto next;
 		}
 skip:

@@ -643,7 +643,7 @@ void mei_timer(struct work_struct *work)
 	}
 out:
 	if (dev->dev_state != MEI_DEV_DISABLED)
-		schedule_delayed_work(&dev->timer_work, 2 * HZ);
+		schedule_delayed_work(&dev->timer_work, msecs_to_jiffies(2000));
 	mutex_unlock(&dev->device_lock);
 }
 

@@ -285,7 +285,7 @@ static void otg_timer(unsigned long _musb)
 		}
 		if (!(devctl & MUSB_DEVCTL_SESSION) && !skip_session)
 			dsps_writeb(mregs, MUSB_DEVCTL, MUSB_DEVCTL_SESSION);
-		mod_timer(&glue->timer, jiffies + wrp->poll_seconds * HZ);
+		mod_timer(&glue->timer, jiffies + wrp->poll_seconds * msecs_to_jiffies(1000));
 		break;
 	case OTG_STATE_A_WAIT_VFALL:
 		musb->xceiv->state = OTG_STATE_A_WAIT_VRISE;
@@ -375,7 +375,7 @@ static irqreturn_t dsps_interrupt(int irq, void *hci)
 			musb->int_usb &= ~MUSB_INTR_VBUSERROR;
 			musb->xceiv->state = OTG_STATE_A_WAIT_VFALL;
 			mod_timer(&glue->timer,
-					jiffies + wrp->poll_seconds * HZ);
+					jiffies + wrp->poll_seconds * msecs_to_jiffies(1000));
 			WARNING("VBUS error workaround (delay coming)\n");
 		} else if (drvvbus) {
 			MUSB_HST_MODE(musb);
@@ -404,7 +404,7 @@ static irqreturn_t dsps_interrupt(int irq, void *hci)
 	/* Poll for ID change in OTG port mode */
 	if (musb->xceiv->state == OTG_STATE_B_IDLE &&
 			musb->port_mode == MUSB_PORT_MODE_DUAL_ROLE)
-		mod_timer(&glue->timer, jiffies + wrp->poll_seconds * HZ);
+		mod_timer(&glue->timer, jiffies + wrp->poll_seconds * msecs_to_jiffies(1000));
 out:
 	spin_unlock_irqrestore(&musb->lock, flags);
 
@@ -908,7 +908,7 @@ static int dsps_resume(struct device *dev)
 	dsps_writel(mbase, wrp->rx_mode, glue->context.rx_mode);
 	if (musb->xceiv->state == OTG_STATE_B_IDLE &&
 	    musb->port_mode == MUSB_PORT_MODE_DUAL_ROLE)
-		mod_timer(&glue->timer, jiffies + wrp->poll_seconds * HZ);
+		mod_timer(&glue->timer, jiffies + wrp->poll_seconds * msecs_to_jiffies(1000));
 
 	return 0;
 }

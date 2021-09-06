@@ -170,9 +170,9 @@ static int firm_report_tx_done(struct usb_serial_port *port);
 
 
 #define COMMAND_PORT		4
-#define COMMAND_TIMEOUT		(2*HZ)	/* 2 second timeout for a command */
+#define COMMAND_TIMEOUT		msecs_to_jiffies(2000)	/* 2 second timeout for a command */
 #define	COMMAND_TIMEOUT_MS	2000
-#define CLOSING_DELAY		(30 * HZ)
+#define CLOSING_DELAY		msecs_to_jiffies(30000)
 
 
 /*****************************************************************************

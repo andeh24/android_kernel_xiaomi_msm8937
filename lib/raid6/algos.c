@@ -158,14 +158,14 @@ static inline const struct raid6_calls *raid6_choose_gen(
 				best = *algo;
 			}
 			pr_info("raid6: %-8s %5ld MB/s\n", (*algo)->name,
-			       (perf*HZ) >> (20-16+RAID6_TIME_JIFFIES_LG2));
+			       (perf*msecs_to_jiffies(1000)) >> (20-16+RAID6_TIME_JIFFIES_LG2));
 		}
 	}
 
 	if (best) {
 		pr_info("raid6: using algorithm %s (%ld MB/s)\n",
 		       best->name,
-		       (bestperf*HZ) >> (20-16+RAID6_TIME_JIFFIES_LG2));
+		       (bestperf*msecs_to_jiffies(1000)) >> (20-16+RAID6_TIME_JIFFIES_LG2));
 		raid6_call = *best;
 	} else
 		pr_err("raid6: Yikes!  No algorithm found!\n");
