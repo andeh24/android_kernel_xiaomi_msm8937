@@ -204,7 +204,7 @@ static void aw2013_brightness_work(struct work_struct *work)
 {
 	struct aw2013_led *led = container_of(work, struct aw2013_led,
 					brightness_work);
-	u8 val;
+	u8 val = 0;
 
 	mutex_lock(&led->pdata->led->lock);
 
@@ -261,7 +261,7 @@ static void aw2013_brightness_work(struct work_struct *work)
 
 static void aw2013_led_blink_set(struct aw2013_led *led, unsigned long blinking)
 {
-	u8 val;
+	u8 val = 0;
 
 	/* enable regulators if they are disabled */
 		 printk("zhufeng: aw2013 led blink set begin\n");
@@ -353,7 +353,7 @@ static ssize_t aw2013_store_blink(struct device *dev,
 static ssize_t aw2013_led_status_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
-		 u8 val_status;
+		 u8 val_status = 0;
 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
 	struct aw2013_led *led =
 			container_of(led_cdev, struct aw2013_led, cdev);
@@ -425,7 +425,7 @@ static struct attribute_group aw2013_led_attr_group = {
 
 static int aw_2013_check_chipid(struct aw2013_led *led)
 {
-	u8 val;
+	u8 val = 0;
 
 
 
