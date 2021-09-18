@@ -57,7 +57,7 @@ static void try_to_suspend(struct work_struct *work)
 	 * system from trying to suspend and waking up in a tight loop.
 	 */
 	if (final_count == initial_count)
-		schedule_timeout_uninterruptible(HZ / 2);
+		schedule_timeout_uninterruptible(msecs_to_jiffies(500));
 
  out:
 	queue_up_suspend_work();

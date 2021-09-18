@@ -106,7 +106,7 @@ static u32	audit_rate_limit;
 /* Number of outstanding audit_buffers allowed.
  * When set to zero, this means unlimited. */
 static u32	audit_backlog_limit = 64;
-#define AUDIT_BACKLOG_WAIT_TIME (60 * HZ)
+#define AUDIT_BACKLOG_WAIT_TIME msecs_to_jiffies(60000)
 static u32	audit_backlog_wait_time = AUDIT_BACKLOG_WAIT_TIME;
 static u32	audit_backlog_wait_overflow = 0;
 
@@ -229,7 +229,7 @@ static inline int audit_rate_check(void)
 	} else {
 		now     = jiffies;
 		elapsed = now - last_check;
-		if (elapsed > HZ) {
+		if (elapsed > msecs_to_jiffies(1000)) {
 			last_check = now;
 			messages   = 0;
 			retval     = 1;
@@ -263,7 +263,7 @@ void audit_log_lost(const char *message)
 	if (!print) {
 		spin_lock_irqsave(&lock, flags);
 		now = jiffies;
-		if (now - last_msg > HZ) {
+		if (now - last_msg > msecs_to_jiffies(1000)) {
 			print = 1;
 			last_msg = now;
 		}

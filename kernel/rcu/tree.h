@@ -393,7 +393,7 @@ struct rcu_data {
 #define RCU_NOGP_WAKE		1
 #define RCU_NOGP_WAKE_FORCE	2
 
-#define RCU_JIFFIES_TILL_FORCE_QS (1 + (HZ > 250) + (HZ > 500))
+#define RCU_JIFFIES_TILL_FORCE_QS (1 + (msecs_to_jiffies(1000) > 250) + (msecs_to_jiffies(1000) > 500))
 					/* For jiffies_till_first_fqs and */
 					/*  and jiffies_till_next_fqs. */
 

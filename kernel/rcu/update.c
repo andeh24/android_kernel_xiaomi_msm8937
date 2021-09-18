@@ -322,7 +322,7 @@ EXPORT_SYMBOL_GPL(do_trace_rcu_torture_read);
 #ifdef CONFIG_RCU_STALL_COMMON
 
 #ifdef CONFIG_PROVE_RCU
-#define RCU_STALL_DELAY_DELTA	       (5 * HZ)
+#define RCU_STALL_DELAY_DELTA	       msecs_to_jiffies(5000)
 #else
 #define RCU_STALL_DELAY_DELTA	       0
 #endif
@@ -348,7 +348,7 @@ int rcu_jiffies_till_stall_check(void)
 		ACCESS_ONCE(rcu_cpu_stall_timeout) = 300;
 		till_stall_check = 300;
 	}
-	return till_stall_check * HZ + RCU_STALL_DELAY_DELTA;
+	return till_stall_check * msecs_to_jiffies(1000) + RCU_STALL_DELAY_DELTA;
 }
 
 void rcu_sysrq_start(void)
@@ -405,7 +405,7 @@ static DEFINE_RAW_SPINLOCK(rcu_tasks_cbs_lock);
 DEFINE_SRCU(tasks_rcu_exit_srcu);
 
 /* Control stall timeouts.  Disable with <= 0, otherwise jiffies till stall. */
-static int rcu_task_stall_timeout __read_mostly = HZ * 60 * 10;
+static int rcu_task_stall_timeout __read_mostly = 600000;
 module_param(rcu_task_stall_timeout, int, 0644);
 
 static void rcu_spawn_tasks_kthread(void);
@@ -554,7 +554,7 @@ static int __noreturn rcu_tasks_kthread(void *arg)
 						 rcu_tasks_cbs_head);
 			if (!rcu_tasks_cbs_head) {
 				WARN_ON(signal_pending(current));
-				schedule_timeout_interruptible(HZ/10);
+				schedule_timeout_interruptible(msecs_to_jiffies(100));
 			}
 			continue;
 		}
@@ -616,8 +616,8 @@ static int __noreturn rcu_tasks_kthread(void *arg)
 			int rtst;
 			struct task_struct *t1;
 
-			schedule_timeout_interruptible(HZ);
-			rtst = ACCESS_ONCE(rcu_task_stall_timeout);
+			schedule_timeout_interruptible(msecs_to_jiffies(1000));
+			rtst = ACCESS_ONCE(msecs_to_jiffies(rcu_task_stall_timeout));
 			needreport = rtst > 0 &&
 				     time_after(jiffies, lastreport + rtst);
 			if (needreport)
@@ -662,7 +662,7 @@ static int __noreturn rcu_tasks_kthread(void *arg)
 			list = next;
 			cond_resched();
 		}
-		schedule_timeout_uninterruptible(HZ/10);
+		schedule_timeout_uninterruptible(msecs_to_jiffies(100));
 	}
 }
 

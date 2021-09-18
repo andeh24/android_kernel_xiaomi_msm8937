@@ -46,7 +46,7 @@ extern void update_cpu_load_active(struct rq *this_rq);
 /*
  * Helpers for converting nanosecond timing to jiffy resolution
  */
-#define NS_TO_JIFFIES(TIME)	((unsigned long)(TIME) / (NSEC_PER_SEC / HZ))
+#define NS_TO_JIFFIES(TIME)	((unsigned long)(TIME) / (NSEC_PER_SEC / msecs_to_jiffies(1000)))
 
 /*
  * Increase resolution of nice-level calculations for 64-bit architectures.

@@ -1296,7 +1296,7 @@ static bool rcu_is_callbacks_kthread(void)
 	return __this_cpu_read(rcu_cpu_kthread_task) == current;
 }
 
-#define RCU_BOOST_DELAY_JIFFIES DIV_ROUND_UP(CONFIG_RCU_BOOST_DELAY * HZ, 1000)
+#define RCU_BOOST_DELAY_JIFFIES DIV_ROUND_UP(CONFIG_RCU_BOOST_DELAY * msecs_to_jiffies(1000), 1000)
 
 /*
  * Do priority-boost accounting for the start of a new grace period.
@@ -1598,7 +1598,7 @@ static void rcu_idle_count_callbacks_posted(void)
 #define RCU_IDLE_FLUSHES 5		/* Number of dyntick-idle tries. */
 #define RCU_IDLE_OPT_FLUSHES 3		/* Optional dyntick-idle tries. */
 #define RCU_IDLE_GP_DELAY 4		/* Roughly one grace period. */
-#define RCU_IDLE_LAZY_GP_DELAY (6 * HZ)	/* Roughly six seconds. */
+#define RCU_IDLE_LAZY_GP_DELAY 6000	/* Roughly six seconds. */
 
 static int rcu_idle_flushes = RCU_IDLE_FLUSHES;
 module_param(rcu_idle_flushes, int, 0644);
@@ -1693,7 +1693,7 @@ int rcu_needs_cpu(int cpu, unsigned long *delta_jiffies)
 		*delta_jiffies = round_up(rcu_idle_gp_delay + jiffies,
 					  rcu_idle_gp_delay) - jiffies;
 	} else {
-		*delta_jiffies = jiffies + rcu_idle_lazy_gp_delay;
+		*delta_jiffies = jiffies + msecs_to_jiffies(rcu_idle_lazy_gp_delay);
 		*delta_jiffies = round_jiffies(*delta_jiffies) - jiffies;
 	}
 	return 0;
@@ -1807,7 +1807,7 @@ static void rcu_prepare_for_idle(int cpu)
 					 rcu_idle_gp_delay);
 		} else if (rcu_cpu_has_callbacks(cpu)) {
 			rdtp->idle_gp_timer_expires =
-				round_jiffies(jiffies + rcu_idle_lazy_gp_delay);
+				round_jiffies(jiffies + msecs_to_jiffies(rcu_idle_lazy_gp_delay));
 			trace_rcu_prep_idle("User dyntick with lazy callbacks");
 		} else {
 			return;
@@ -1873,7 +1873,7 @@ static void rcu_prepare_for_idle(int cpu)
 					 rcu_idle_gp_delay);
 		} else {
 			rdtp->idle_gp_timer_expires =
-				round_jiffies(jiffies + rcu_idle_lazy_gp_delay);
+				round_jiffies(jiffies + msecs_to_jiffies(rcu_idle_lazy_gp_delay));
 			trace_rcu_prep_idle("Dyntick with lazy callbacks");
 		}
 		tp = &rdtp->idle_gp_timer;
@@ -3126,7 +3126,7 @@ static unsigned long rcu_sysidle_delay(void)
 {
 	if (nr_cpu_ids <= CONFIG_NO_HZ_FULL_SYSIDLE_SMALL)
 		return 0;
-	return DIV_ROUND_UP(nr_cpu_ids * HZ, rcu_fanout_leaf * 1000);
+	return DIV_ROUND_UP(nr_cpu_ids * msecs_to_jiffies(1000), rcu_fanout_leaf * 1000);
 }
 
 /*
@@ -3353,7 +3353,7 @@ static bool rcu_nohz_full_cpu(struct rcu_state *rsp)
 #ifdef CONFIG_NO_HZ_FULL
 	if (tick_nohz_full_cpu(smp_processor_id()) &&
 	    (!rcu_gp_in_progress(rsp) ||
-	     ULONG_CMP_LT(jiffies, ACCESS_ONCE(rsp->gp_start) + HZ)))
+	     ULONG_CMP_LT(jiffies, ACCESS_ONCE(rsp->gp_start) + msecs_to_jiffies(1000))))
 		return 1;
 #endif /* #ifdef CONFIG_NO_HZ_FULL */
 	return 0;

@@ -4951,7 +4951,7 @@ static __init int test_ringbuffer(void)
 
 	set_current_state(TASK_INTERRUPTIBLE);
 	/* Just run for 10 seconds */;
-	schedule_timeout(10 * HZ);
+	schedule_timeout(msecs_to_jiffies(10000));
 
 	kthread_stop(rb_hammer);
 

@@ -1,3 +1,4 @@
+
 /*
  * ring buffer tester and benchmark
  *
@@ -404,7 +405,7 @@ static int ring_buffer_producer_thread(void *arg)
 
 		trace_printk("Sleeping for 10 secs\n");
 		set_current_state(TASK_INTERRUPTIBLE);
-		schedule_timeout(HZ * SLEEP_TIME);
+		schedule_timeout(msecs_to_jiffies(1000) * SLEEP_TIME);
 	}
 
 	if (kill_test)

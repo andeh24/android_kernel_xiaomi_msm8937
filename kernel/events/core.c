@@ -217,7 +217,7 @@ int perf_proc_update_handler(struct ctl_table *table, int write,
 	if (ret || !write)
 		return ret;
 
-	max_samples_per_tick = DIV_ROUND_UP(sysctl_perf_event_sample_rate, HZ);
+	max_samples_per_tick = DIV_ROUND_UP(sysctl_perf_event_sample_rate, msecs_to_jiffies(1000));
 	perf_sample_period_ns = NSEC_PER_SEC / sysctl_perf_event_sample_rate;
 	update_perf_cpu_limits();
 
@@ -296,7 +296,7 @@ void perf_sample_event_took(u64 sample_len_ns)
 		return;
 
 	max_samples_per_tick = DIV_ROUND_UP(max_samples_per_tick, 2);
-	sysctl_perf_event_sample_rate = max_samples_per_tick * HZ;
+	sysctl_perf_event_sample_rate = max_samples_per_tick * msecs_to_jiffies(1000);
 	perf_sample_period_ns = NSEC_PER_SEC / sysctl_perf_event_sample_rate;
 
 	update_perf_cpu_limits();
@@ -768,7 +768,7 @@ perf_cgroup_mark_enabled(struct perf_event *event,
  * set default to be dependent on timer tick just
  * like original code
  */
-#define PERF_CPU_HRTIMER (1000 / HZ)
+#define PERF_CPU_HRTIMER msecs_to_jiffies(1)
 /*
  * function must be called with interrupts disbled
  */
@@ -8638,7 +8638,7 @@ void __init perf_event_init(void)
 	WARN(ret, "hw_breakpoint initialization failed with: %d", ret);
 
 	/* do not patch jump label more than once per second */
-	jump_label_rate_limit(&perf_sched_events, HZ);
+	jump_label_rate_limit(&perf_sched_events, msecs_to_jiffies(1000));
 
 	/*
 	 * Build time assertion that we keep the data_head at the intended

@@ -978,7 +978,7 @@ static int __init boot_delay_setup(char *str)
 	unsigned long lpj;
 
 	lpj = preset_lpj ? preset_lpj : 1000000;	/* some guess */
-	loops_per_msec = (unsigned long long)lpj / 1000 * HZ;
+	loops_per_msec = (unsigned long long)lpj / msecs_to_jiffies(1000000);
 
 	get_option(&str, &boot_delay);
 	if (boot_delay > 10 * 1000)
@@ -986,7 +986,7 @@ static int __init boot_delay_setup(char *str)
 
 	pr_debug("boot_delay: %u, preset_lpj: %ld, lpj: %lu, "
 		"HZ: %d, loops_per_msec: %llu\n",
-		boot_delay, preset_lpj, lpj, HZ, loops_per_msec);
+		boot_delay, preset_lpj, lpj, msecs_to_jiffies(1000), loops_per_msec);
 	return 0;
 }
 early_param("boot_delay", boot_delay_setup);
@@ -1454,7 +1454,7 @@ static void zap_locks(void)
 	static unsigned long oops_timestamp;
 
 	if (time_after_eq(jiffies, oops_timestamp) &&
-			!time_after(jiffies, oops_timestamp + 30 * HZ))
+			!time_after(jiffies, oops_timestamp + msecs_to_jiffies(30000)))
 		return;
 
 	oops_timestamp = jiffies;

@@ -465,7 +465,7 @@ int torture_shutdown_init(int ssecs, void (*cleanup)(void))
 	shutdown_secs = ssecs;
 	torture_shutdown_hook = cleanup;
 	if (shutdown_secs > 0) {
-		shutdown_time = jiffies + shutdown_secs * HZ;
+		shutdown_time = jiffies + shutdown_secs * msecs_to_jiffies(1000);
 		ret = torture_create_kthread(torture_shutdown, NULL,
 					     shutdown_task);
 	}
@@ -532,7 +532,7 @@ void stutter_wait(const char *title)
 				while (ACCESS_ONCE(stutter_pause_test))
 					cond_resched();
 		else
-			schedule_timeout_interruptible(round_jiffies_relative(HZ));
+			schedule_timeout_interruptible(round_jiffies_relative(msecs_to_jiffies(1000)));
 		torture_shutdown_absorb(title);
 	}
 }

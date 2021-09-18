@@ -306,7 +306,7 @@ module_param(jiffies_till_next_fqs, ulong, 0644);
  * How long the grace period must be before we start recruiting
  * quiescent-state help from rcu_note_context_switch().
  */
-static ulong jiffies_till_sched_qs = HZ / 20;
+static ulong jiffies_till_sched_qs = 50;
 module_param(jiffies_till_sched_qs, ulong, 0644);
 
 static bool rcu_start_gp_advanced(struct rcu_state *rsp, struct rcu_node *rnp,
@@ -984,7 +984,7 @@ static int rcu_implicit_dynticks_qs(struct rcu_data *rdp,
 	 */
 	rcrmp = &per_cpu(rcu_sched_qs_mask, rdp->cpu);
 	if (ULONG_CMP_GE(jiffies,
-			 rdp->rsp->gp_start + jiffies_till_sched_qs) ||
+			 rdp->rsp->gp_start + msecs_to_jiffies(jiffies_till_sched_qs)) ||
 	    ULONG_CMP_GE(jiffies, rdp->rsp->jiffies_resched)) {
 		if (!(ACCESS_ONCE(*rcrmp) & rdp->rsp->flavor_mask)) {
 			ACCESS_ONCE(rdp->cond_resched_completed) =
@@ -1800,9 +1800,9 @@ static int __noreturn rcu_gp_kthread(void *arg)
 		/* Handle quiescent-state forcing. */
 		fqs_state = RCU_SAVE_DYNTICK;
 		j = jiffies_till_first_fqs;
-		if (j > HZ) {
-			j = HZ;
-			jiffies_till_first_fqs = HZ;
+		if (j > msecs_to_jiffies(1000)) {
+			j = msecs_to_jiffies(1000);
+			jiffies_till_first_fqs = msecs_to_jiffies(1000);
 		}
 		ret = 0;
 		for (;;) {
@@ -1843,9 +1843,9 @@ static int __noreturn rcu_gp_kthread(void *arg)
 						       TPS("fqswaitsig"));
 			}
 			j = jiffies_till_next_fqs;
-			if (j > HZ) {
-				j = HZ;
-				jiffies_till_next_fqs = HZ;
+			if (j > msecs_to_jiffies(1000)) {
+				j = msecs_to_jiffies(1000);
+				jiffies_till_next_fqs = msecs_to_jiffies(1000);
 			} else if (j < 1) {
 				j = 1;
 				jiffies_till_next_fqs = 1;

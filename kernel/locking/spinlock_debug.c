@@ -113,7 +113,7 @@ static inline void debug_spin_unlock(raw_spinlock_t *lock)
 static void __spin_lock_debug(raw_spinlock_t *lock)
 {
 	u64 i;
-	u64 loops = loops_per_jiffy * HZ;
+	u64 loops = loops_per_jiffy * msecs_to_jiffies(1000);
 
 	for (i = 0; i < loops; i++) {
 		if (arch_spin_trylock(&lock->raw_lock))
@@ -188,7 +188,7 @@ static void rwlock_bug(rwlock_t *lock, const char *msg)
 static void __read_lock_debug(rwlock_t *lock)
 {
 	u64 i;
-	u64 loops = loops_per_jiffy * HZ;
+	u64 loops = loops_per_jiffy * msecs_to_jiffies(1000);
 	int print_once = 1;
 
 	for (;;) {
@@ -263,7 +263,7 @@ static inline void debug_write_unlock(rwlock_t *lock)
 static void __write_lock_debug(rwlock_t *lock)
 {
 	u64 i;
-	u64 loops = loops_per_jiffy * HZ;
+	u64 loops = loops_per_jiffy * msecs_to_jiffies(1000);
 	int print_once = 1;
 
 	for (;;) {

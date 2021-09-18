@@ -2309,7 +2309,7 @@ static void watchdog(struct rq *rq, struct task_struct *p)
 			p->rt.watchdog_stamp = jiffies;
 		}
 
-		next = DIV_ROUND_UP(min(soft, hard), USEC_PER_SEC/HZ);
+		next = DIV_ROUND_UP(min(soft, hard), USEC_PER_SEC/msecs_to_jiffies(1000));
 		if (p->rt.timeout > next)
 			p->cputime_expires.sched_exp = p->se.sum_exec_runtime;
 	}
