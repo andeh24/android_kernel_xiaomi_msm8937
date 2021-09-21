@@ -38,7 +38,7 @@ static const int cfq_hist_divisor = 4;
 /*
  * offset from end of service tree
  */
-#define CFQ_IDLE_DELAY		(HZ / 5)
+#define CFQ_IDLE_DELAY		msecs_to_jiffies(500)
 
 /*
  * below this threshold, we consider thinktime immediate
@@ -2049,7 +2049,7 @@ static void cfq_service_tree_add(struct cfq_data *cfqd, struct cfq_queue *cfqq,
 		rb_key -= cfqq->slice_resid;
 		cfqq->slice_resid = 0;
 	} else {
-		rb_key = -HZ;
+		rb_key = -msecs_to_jiffies(1000);
 		__cfqq = cfq_rb_first(st);
 		rb_key += __cfqq ? __cfqq->rb_key : jiffies;
 	}
@@ -4476,7 +4476,7 @@ static int cfq_init_queue(struct request_queue *q, struct elevator_type *e)
 	 * we optimistically start assuming sync ops weren't delayed in last
 	 * second, in order to have larger depth for async operations.
 	 */
-	cfqd->last_delayed_sync = jiffies - HZ;
+	cfqd->last_delayed_sync = jiffies - msecs_to_jiffies(1000);
 	return 0;
 
 out_free:
